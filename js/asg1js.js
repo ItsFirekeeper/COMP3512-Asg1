@@ -1,3 +1,7 @@
+fetch('http://www.randyconnolly.com/funwebdev/3rd/api/stocks/companies.php')
+  .then(response => response.json())
+  .then(data => console.log(data));
+
 document.addEventListener("DOMContentLoaded", function() {
     const wrapDiv = document.querySelector("#credits");
     let creditLoop = true;
