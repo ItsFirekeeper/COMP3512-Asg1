@@ -1,3 +1,5 @@
+/* Used general format of Lab10 test your knowledge 5 */
+
 body {
     background-color: white;
     font-family: Open Sans, sans-serif;
@@ -27,18 +29,22 @@ body {
     grid-column: 1 / span 1;
     grid-row: 2 / span 2;
 }
+
 #map {
     grid-column: 2 / span 1;
     grid-row: 3 / span 1;
 }
+
 #company-info {
     grid-column: 2 / span 1;
     grid-row: 2 / span 1;
 }
+
 #stock-data {
     grid-column: 3 / span 1;
     grid-row: 2 / span 1;
 }
+
 #stock-data-secondary {
     grid-column: 3 / span 1;
     grid-row: 3 / span 1;
@@ -51,4 +57,16 @@ body {
     border-radius: 5px;
     padding: 10px;
     margin: 5px;
+}
+
+#companyList {
+    list-style-type: none;
+    overflow-y: scroll;
+    background-color: white;
+    border: 1px solid black;
+    height: 500px;
+    margin: 0px;
+    padding-left: 5%;
+    padding-top: 3%;
+    padding-bottom: 3%;
 }
