@@ -4,6 +4,14 @@ document.addEventListener("DOMContentLoaded", function() {
     const filterBox = document.querySelector("#filterCompanies");
     const resultsList = document.querySelector("#companyList");
     const companyDetails = document.querySelector("#companyDetails");
+    const filterCompanies = document.querySelector("#filterCompanies");
+
+    filterCompanies.style.display = "none";
+    filterLabel.style.display = "none";
+    resultsList.style.display = "none";
+    companyDetails.style.display = "none";
+    document.querySelector("#clearFilter").style.display = "none";
+
     let creditLoop = true;
     let compList = [];
     document.querySelector('#header').addEventListener('mouseover', (e) => {
@@ -24,14 +32,11 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     document.querySelector('#popCompanyList').addEventListener('click', (e) => {
-        fetchCoList();
+        listCompaniesGo();
     });
     document.querySelector('#clearFilter').addEventListener('click', (e) => {
         fetchCoList();
         filterBox.value = "";
-    });
-    document.querySelector('#resetCompanyList').addEventListener('click', (e) => {
-        resetCoList();
     });
     document.querySelector('#companyList').addEventListener('click', (e) => {
         if (e.target.nodeName.toLowerCase() == 'li') {
@@ -40,9 +45,20 @@ document.addEventListener("DOMContentLoaded", function() {
     });
     document.querySelector('#filterCompanies').addEventListener('input', (e) => {
         if (e.target.value != "") {
-            filterCompanies(e.target.value);
+            filterCompaniesList(e.target.value);
+        }
+        else {
+            popCoList(compList);
         }
     });
+
+    function listCompaniesGo() {
+        filterCompanies.style.display = "block";
+    filterLabel.style.display = "block";
+    resultsList.style.display = "block";
+    document.querySelector("#clearFilter").style.display = "block";
+        fetchCoList();
+    }
 
     function fetchCoList() {
         fetch(countryString).then(response => response.json()).then(data => {
@@ -100,7 +116,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
-    function filterCompanies(inputText) {
+    function filterCompaniesList(inputText) {
         console.log(String(inputText));
         let filterList = compList;
         filterList = compList.filter(word => word.name.toLowerCase().startsWith(inputText.toLowerCase()));
