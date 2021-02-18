@@ -1,6 +1,9 @@
 document.addEventListener("DOMContentLoaded", function() {
     const countryString = "http://www.randyconnolly.com/funwebdev/3rd/api/stocks/companies.php";
     const wrapDiv = document.querySelector("#credits");
+    const filterBox = document.querySelector("#filterCompanies");
+    const resultsList = document.querySelector("#companyList");
+    const companyDetails = document.querySelector("#companyDetails");
     let creditLoop = true;
     let compList = [];
     document.querySelector('#header').addEventListener('mouseover', (e) => {
@@ -23,6 +26,10 @@ document.addEventListener("DOMContentLoaded", function() {
     document.querySelector('#popCompanyList').addEventListener('click', (e) => {
         fetchCoList();
     });
+    document.querySelector('#clearFilter').addEventListener('click', (e) => {
+        fetchCoList();
+        filterBox.value = "";
+    });
     document.querySelector('#resetCompanyList').addEventListener('click', (e) => {
         resetCoList();
     });
@@ -31,35 +38,36 @@ document.addEventListener("DOMContentLoaded", function() {
             popCompanyInfo(e);
         }
     });
+    document.querySelector('#filterCompanies').addEventListener('input', (e) => {
+        if (e.target.value != "") {
+            filterCompanies(e.target.value);
+        }
+    });
 
     function fetchCoList() {
         fetch(countryString).then(response => response.json()).then(data => {
             compList = [];
             compList.push(...data);
-            popCoList();
+            popCoList(compList);
         } ).catch(error => console.error(error));
     }
 
-    function popCoList() {
-        const resultsList = document.querySelector("#companyList");
+    function popCoList(popArray) {
         resultsList.innerHTML = "";
-        for (let comp of compList) {
+        for (let el of popArray) {
             let countryItem = document.createElement("li");
-            countryItem.innerHTML = comp.name;
+            countryItem.innerHTML = el.name;
             countryItem.setAttribute("id", "countryItem");
             resultsList.appendChild(countryItem);
         }
     }
 
     function resetCoList() {
-        const resultsList = document.querySelector("#companyList");
-        const companyDetails = document.querySelector("#companyDetails");
         resultsList.innerHTML = "";
         companyDetails.innerHTML = "";
     }
 
     function popCompanyInfo(companyListItem) {
-        const companyDetails = document.querySelector("#companyDetails");
         companyDetails.innerHTML = "";
         for (c of compList) {
             if (companyListItem.target.innerHTML == c.name) {
@@ -90,5 +98,12 @@ document.addEventListener("DOMContentLoaded", function() {
                 companyDetails.appendChild(description);
             }
         }
+    }
+
+    function filterCompanies(inputText) {
+        console.log(String(inputText));
+        let filterList = compList;
+        filterList = compList.filter(word => word.name.toLowerCase().startsWith(inputText.toLowerCase()));
+        popCoList(filterList);
     }
 });

@@ -70,3 +70,9 @@ body {
     padding-top: 3%;
     padding-bottom: 3%;
 }
+
+#companyDetails {
+    background-color: white;
+    border: 1px solid black;
+    padding: 5px;
+}
