@@ -1,3 +1,4 @@
+<!-- Used general format of Lab10 test your knowledge 5 -->
 <!DOCTYPE html>
 <html>
     <head>
@@ -19,13 +20,17 @@
             <div class="section" id="list-companies">
                 <section>
                     <h2>List of Companies</h2>
-                    <button>go</button>
-                    <button type="reset">clear</button>
+                    <label for="filter" id="filterLabel">Filter:</label>
+                    <input type="text" id="filterCompanies" name="filter"><br>
+                    <button id="popCompanyList">Go</button>
+                    <button id="clearFilter">Clear Filter</button>
+                    <ul id="companyList"></ul>
                 </section>  	
             </div>
             <div class="section" id="company-info">
                 <section>
                     <h2>Company Information</h2>
+                    <div id="companyDetails"></div>
                 </section>  
             </div>
             <div class="section" id="map">
