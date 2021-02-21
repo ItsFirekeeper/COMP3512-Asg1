@@ -14,8 +14,9 @@ document.addEventListener("DOMContentLoaded", function() {
      
     let creditLoop = true;
     let compList = [];
-    let markerLatLong = {lat: 0, lng: 0 };
+    let markerLatLong = {lat: null, lng: null };
     let marker = null;
+    let worldMap = null;
     
     initMap();
     
@@ -46,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function() {
     document.querySelector('#companyList').addEventListener('click', (e) => {
         if (e.target.nodeName.toLowerCase() == 'li') {
             popCompanyInfo(e);
-            moveMapMarker(e);
+            moveMapMarker(e, worldMap);
         }
     });
     document.querySelector('#filterCompanies').addEventListener('input', (e) => {
@@ -58,27 +59,29 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
     
-   function moveMapMarker(companyListItem){
-        console.log(companyListItem.target.innerHTML);
+   function moveMapMarker(companyListEvent, currentMap){
+        console.log(companyListEvent.target.innerHTML);
         for (c of compList) {
-            if (companyListItem.target.innerHTML == c.name) {
-       
-            markerLatLong.lat = c.Latitude;
-            markerLatLong.lng = c.Longitude;
+            if (companyListEvent.target.innerHTML == c.name) {
+       markerLatLong = {lat: c.latitude, lng: c.longitude };
+           if(marker != null){
+                marker.setMap(null);
+               marker = null;
+           }
             marker = new google.maps.Marker({
             position: markerLatLong,
             title: c.address,
-            map: map
+            map: currentMap
         });
+                break;
             }
-       console.log(companyListItem);
+        }
    }
 
     function initMap() {
-        var map;
-        map = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: 0, lng: 0},
-        zoom: 10
+        worldMap = new google.maps.Map(document.getElementById('map'), {
+        center : {lat: 30.0599153, lng: 31.262019913},
+        zoom: 1
             });
     }  
     
