@@ -5,6 +5,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const resultsList = document.querySelector("#companyList");
     const companyDetails = document.querySelector("#companyDetails");
     const filterCompanies = document.querySelector("#filterCompanies");
+    const companyList = document.querySelector("#list-companies");
 
     filterCompanies.style.display = "none";
     filterLabel.style.display = "none";
@@ -20,7 +21,7 @@ document.addEventListener("DOMContentLoaded", function() {
     
     initMap();
     
-    document.querySelector('#header').addEventListener('mouseover', (e) => {
+    document.querySelector('#credits').addEventListener('mouseover', (e) => {
         if (e.target.nodeName.toLowerCase() == 'i') {
             if (creditLoop) {
                 creditLoop = false;
@@ -38,15 +39,16 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     document.querySelector('#popCompanyList').addEventListener('click', (e) => {
-        listCompaniesGo();
+        fetchCoListInitial();
     });
     document.querySelector('#clearFilter').addEventListener('click', (e) => {
-        fetchCoList();
+        refreshCoList();
         filterBox.value = "";
     });
     document.querySelector('#companyList').addEventListener('click', (e) => {
         if (e.target.nodeName.toLowerCase() == 'li') {
             popCompanyInfo(e);
+            companyDetails.style.display = "block";
             moveMapMarker(e, worldMap);
         }
     });
@@ -59,45 +61,53 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
     
-   function moveMapMarker(companyListEvent, currentMap){
-        console.log(companyListEvent.target.innerHTML);
+    function moveMapMarker(companyListEvent, currentMap){
+        console.log(companyListEvent.target.textContent);
         for (c of compList) {
-            if (companyListEvent.target.innerHTML == c.name) {
-       markerLatLong = {lat: c.latitude, lng: c.longitude };
-           if(marker != null){
-                marker.setMap(null);
-               marker = null;
-           }
-            marker = new google.maps.Marker({
-            position: markerLatLong,
-            title: c.address,
-            map: currentMap
-        });
+            if (companyListEvent.target.textContent == c.name) {
+                markerLatLong = {lat: c.latitude, lng: c.longitude };
+                if(marker != null){
+                    marker.setMap(null);
+                    marker = null;
+                }
+                marker = new google.maps.Marker({
+                    position: markerLatLong,
+                    title: c.address,
+                    map: currentMap
+                });
                 break;
             }
         }
-   }
+    }
 
     function initMap() {
         worldMap = new google.maps.Map(document.getElementById('map'), {
-        center : {lat: 30.0599153, lng: 31.262019913},
-        zoom: 1
-            });
-    }  
-    
-    function listCompaniesGo() {
-        filterCompanies.style.display = "block";
-    filterLabel.style.display = "block";
-    resultsList.style.display = "block";
-    document.querySelector("#clearFilter").style.display = "block";
-        fetchCoList();
+            center : {lat: 30.0599153, lng: 31.262019913},
+            zoom: 1
+        });
     }
 
-    function fetchCoList() {
+    function refreshCoList() {
         fetch(countryString).then(response => response.json()).then(data => {
             compList = [];
             compList.push(...data);
             popCoList(compList);
+        } ).catch(error => console.error(error));
+    }
+
+    function fetchCoListInitial() {
+        document.querySelector("#popCompanyList").style.display = "none";
+        const loader = generateLoader();
+        companyList.appendChild(loader);
+        fetch(countryString).then(response => response.json()).then(data => {
+            compList = [];
+            compList.push(...data);
+            popCoList(compList);
+            companyList.removeChild(loader);
+            filterCompanies.style.display = "block";
+            filterLabel.style.display = "block";
+            resultsList.style.display = "block";
+            document.querySelector("#clearFilter").style.display = "block";
         } ).catch(error => console.error(error));
     }
 
@@ -119,32 +129,39 @@ document.addEventListener("DOMContentLoaded", function() {
     function popCompanyInfo(companyListItem) {
         companyDetails.innerHTML = "";
         for (c of compList) {
-            if (companyListItem.target.innerHTML == c.name) {
-                // const logo = document.createElement("");
-                const symbol = document.createElement("p");
-                const name = document.createElement("p");
-                const sector = document.createElement("p");
-                const subindustry = document.createElement("p");
-                const address = document.createElement("p");
-                const website = document.createElement("p");
-                const exchange = document.createElement("p");
-                const description = document.createElement("p");
-                symbol.innerHTML = "Symbol: " + c.symbol;
-                name.innerHTML = "Name: " + c.name;
-                sector.innerHTML = "Sector: " + c.sector;
-                subindustry.innerHTML = "SubIndustry: " + c.subindustry;
-                address.innerHTML = "Address: " + c.address;
-                website.innerHTML = "Website: " + c.website;
-                exchange.innerHTML = "Exchange: " + c.exchange;
-                description.innerHTML = "Description: " + c.description;
-                companyDetails.appendChild(symbol);
-                companyDetails.appendChild(name);
-                companyDetails.appendChild(sector);
-                companyDetails.appendChild(subindustry);
-                companyDetails.appendChild(address);
-                companyDetails.appendChild(website);
-                companyDetails.appendChild(exchange);
-                companyDetails.appendChild(description);
+            if (companyListItem.target.textContent == c.name) {
+                if (c.symbol != "") {
+                    // const logo = document.createElement("");
+                    const symbol = document.createElement("p");
+                    const name = document.createElement("p");
+                    const sector = document.createElement("p");
+                    const subindustry = document.createElement("p");
+                    const address = document.createElement("p");
+                    const website = document.createElement("p");
+                    const exchange = document.createElement("p");
+                    const description = document.createElement("p");
+                    symbol.textContent = `Symbol: ${c.symbol}`;
+                    name.textContent = `Name: ${c.name}`;
+                    sector.textContent = `Sector: ${c.sector}`;
+                    subindustry.textContent = `SubIndustry: ${c.subindustry}`;
+                    address.textContent = `Address: ${c.address}`;
+                    website.textContent = `Website: ${c.website}`;
+                    exchange.textContent = `Exchange: ${c.exchange}`;
+                    description.textContent = `Description: ${c.description}`;
+                    companyDetails.appendChild(symbol);
+                    companyDetails.appendChild(name);
+                    companyDetails.appendChild(sector);
+                    companyDetails.appendChild(subindustry);
+                    companyDetails.appendChild(address);
+                    companyDetails.appendChild(website);
+                    companyDetails.appendChild(exchange);
+                    companyDetails.appendChild(description);
+                }
+                else {
+                    const notFound = document.createElement("p");
+                    notFound.innerHTML = "Details are not available at this time";
+                    companyDetails.appendChild(notFound);
+                }
             }
         }
     }
@@ -154,5 +171,20 @@ document.addEventListener("DOMContentLoaded", function() {
         let filterList = compList;
         filterList = compList.filter(word => word.name.toLowerCase().startsWith(inputText.toLowerCase()));
         popCoList(filterList);
+    }
+
+    function generateLoader() {
+        // The following code was inspired by https://epic-spinners.epicmax.co/ 
+        // All credit goes to Epicmax and Vasili Savitski
+        const outerDiv = document.createElement("div");
+        outerDiv.className = "orbit-spinner";
+        for (let i = 0; i < 3; i++) {
+            const innerDiv = document.createElement("div");
+            innerDiv.className = "orbit";
+            outerDiv.appendChild(innerDiv);
+        }
+        return outerDiv;
+        // End of code inspired by https://epic-spinners.epicmax.co/
+        // credit to Epicmax and Vasili Savitski
     }
 });
