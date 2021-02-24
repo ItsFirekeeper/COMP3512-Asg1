@@ -11,9 +11,15 @@ document.addEventListener("DOMContentLoaded", function() {
     resultsList.style.display = "none";
     companyDetails.style.display = "none";
     document.querySelector("#clearFilter").style.display = "none";
-
+     
     let creditLoop = true;
     let compList = [];
+    let markerLatLong = {lat: null, lng: null };
+    let marker = null;
+    let worldMap = null;
+    
+    initMap();
+    
     document.querySelector('#header').addEventListener('mouseover', (e) => {
         if (e.target.nodeName.toLowerCase() == 'i') {
             if (creditLoop) {
@@ -41,6 +47,7 @@ document.addEventListener("DOMContentLoaded", function() {
     document.querySelector('#companyList').addEventListener('click', (e) => {
         if (e.target.nodeName.toLowerCase() == 'li') {
             popCompanyInfo(e);
+            moveMapMarker(e, worldMap);
         }
     });
     document.querySelector('#filterCompanies').addEventListener('input', (e) => {
@@ -51,7 +58,33 @@ document.addEventListener("DOMContentLoaded", function() {
             popCoList(compList);
         }
     });
+    
+   function moveMapMarker(companyListEvent, currentMap){
+        console.log(companyListEvent.target.innerHTML);
+        for (c of compList) {
+            if (companyListEvent.target.innerHTML == c.name) {
+       markerLatLong = {lat: c.latitude, lng: c.longitude };
+           if(marker != null){
+                marker.setMap(null);
+               marker = null;
+           }
+            marker = new google.maps.Marker({
+            position: markerLatLong,
+            title: c.address,
+            map: currentMap
+        });
+                break;
+            }
+        }
+   }
 
+    function initMap() {
+        worldMap = new google.maps.Map(document.getElementById('map'), {
+        center : {lat: 30.0599153, lng: 31.262019913},
+        zoom: 1
+            });
+    }  
+    
     function listCompaniesGo() {
         filterCompanies.style.display = "block";
     filterLabel.style.display = "block";
