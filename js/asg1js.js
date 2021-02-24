@@ -48,6 +48,7 @@ document.addEventListener("DOMContentLoaded", function() {
         if (e.target.nodeName.toLowerCase() == 'li') {
             popCompanyInfo(e);
             moveMapMarker(e, worldMap);
+            highlightListItem(e);
         }
     });
     document.querySelector('#filterCompanies').addEventListener('input', (e) => {
@@ -58,6 +59,19 @@ document.addEventListener("DOMContentLoaded", function() {
             popCoList(compList);
         }
     });
+    
+    function highlightListItem(companyListItem){
+        
+      let activeList = document.querySelectorAll('.active');
+        
+        for(let a of activeList){
+            
+            a.classList.remove("active");
+            
+        }
+        companyListItem.target.classList.add('active');
+        
+    }
     
    function moveMapMarker(companyListEvent, currentMap){
         console.log(companyListEvent.target.innerHTML);
