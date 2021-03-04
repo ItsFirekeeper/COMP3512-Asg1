@@ -62,6 +62,12 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
     
+    
+    document.querySelector('#stock-data'){
+        
+        
+    }
+    
     function moveMapMarker(companyListEvent, currentMap){
         console.log(companyListEvent.target.textContent);
         for (c of compList) {
