@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", function() {
     const countryString = "http://www.randyconnolly.com/funwebdev/3rd/api/stocks/companies.php";
+    const stocksURL = "http://www.randyconnolly.com/funwebdev/3rd/api/stocks/history.php?symbol=";
     const wrapDiv = document.querySelector("#credits");
     const filterBox = document.querySelector("#filterCompanies");
     const resultsList = document.querySelector("#companyList");
@@ -172,7 +173,7 @@ document.addEventListener("DOMContentLoaded", function() {
         filterList = compList.filter(word => word.name.toLowerCase().startsWith(inputText.toLowerCase()));
         popCoList(filterList);
     }
-
+      
     function generateLoader() {
         // The following code was inspired by https://epic-spinners.epicmax.co/ 
         // All credit goes to Epicmax and Vasili Savitski
