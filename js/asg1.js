@@ -71,11 +71,13 @@ document.addEventListener("DOMContentLoaded", function() {
                     marker.setMap(null);
                     marker = null;
                 }
+                worldMap.setZoom(6);
                 marker = new google.maps.Marker({
                     position: markerLatLong,
                     title: c.address,
                     map: currentMap
                 });
+                worldMap.panTo(marker.position);
                 break;
             }
         }
