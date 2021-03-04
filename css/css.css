@@ -156,7 +156,7 @@ End of code retrieved from https://epic-spinners.epicmax.co/
 credit to Epicmax and Vasili Savitski
 */
 
-#companyList li:hover {
+.active {
     background-color: cornflowerblue;
     color: white;
 }

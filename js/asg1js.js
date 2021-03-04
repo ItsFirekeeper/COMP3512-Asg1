@@ -26,7 +26,6 @@ document.addEventListener("DOMContentLoaded", function() {
             if (creditLoop) {
                 creditLoop = false;
                 const names = document.createElement("div");
-                const cont = true;
                 names.innerHTML = "Created by Angela Li and Braedon Taylor";
                 names.classList = "credit-class"
                 wrapDiv.appendChild(names);
@@ -47,6 +46,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
     document.querySelector('#companyList').addEventListener('click', (e) => {
         if (e.target.nodeName.toLowerCase() == 'li') {
+            highlightListItem(e);
             popCompanyInfo(e);
             companyDetails.style.display = "block";
             moveMapMarker(e, worldMap);
@@ -186,5 +186,13 @@ document.addEventListener("DOMContentLoaded", function() {
         return outerDiv;
         // End of code inspired by https://epic-spinners.epicmax.co/
         // credit to Epicmax and Vasili Savitski
+    }
+
+    function highlightListItem(companyListItem){
+      let activeList = document.querySelectorAll('.active');
+        for(let a of activeList){
+            a.classList.remove("active");
+        }
+        companyListItem.target.classList.add('active');
     }
 });
