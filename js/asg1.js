@@ -90,6 +90,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
+    // refreshing the company list
     function refreshCoList() {
         fetch(countryString).then(response => response.json()).then(data => {
             compList = [];
@@ -98,15 +99,23 @@ document.addEventListener("DOMContentLoaded", function() {
         } ).catch(error => console.error(error));
     }
 
+    // fetching the company list
     function fetchCoListInitial() {
+        // go button removed
         document.querySelector("#popCompanyList").style.display = "none";
+        // loader added
         const loader = generateLoader();
         companyList.appendChild(loader);
+        // -------- fetch begins -------- 
         fetch(countryString).then(response => response.json()).then(data => {
-            compList = [];
-            compList.push(...data);
+            let json = JSON.stringify(data);
+            localStorage.setItem("companies", json);
+            compList = JSON.parse(localStorage.getItem("companies"));
+            // -------- fetch ends -------- 
             popCoList(compList);
+            // remove loader
             companyList.removeChild(loader);
+            // show company elements
             filterCompanies.style.display = "block";
             filterLabel.style.display = "block";
             resultsList.style.display = "block";
