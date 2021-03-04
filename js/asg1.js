@@ -22,6 +22,7 @@ document.addEventListener("DOMContentLoaded", function() {
     
     initMap();
     
+    // Event listener for credit section at the top of the page - display names of developers
     document.querySelector('#credits').addEventListener('mouseover', (e) => {
         if (e.target.nodeName.toLowerCase() == 'i') {
             if (creditLoop) {
@@ -38,15 +39,19 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
+    // Event listener for the "Go" button
     document.querySelector('#popCompanyList').addEventListener('click', (e) => {
         fetchCoListInitial();
         // localStorage.setItem("companies", "");
     });
+
+    // Event listener for the "Clear Filter" button
     document.querySelector('#clearFilter').addEventListener('click', (e) => {
-        
         refreshCoList();
         filterBox.value = "";
     });
+
+    // Event listener for when a list element is clicked
     document.querySelector('#companyList').addEventListener('click', (e) => {
         if (e.target.nodeName.toLowerCase() == 'li') {
             highlightListItem(e);
@@ -55,6 +60,8 @@ document.addEventListener("DOMContentLoaded", function() {
             moveMapMarker(e, worldMap);
         }
     });
+
+    // Event listener for the "Filter" input box
     document.querySelector('#filterCompanies').addEventListener('input', (e) => {
         if (e.target.value != "") {
             filterCompaniesList(e.target.value);
@@ -64,6 +71,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
     
+    // Move the map marker to the specified company location
     function moveMapMarker(companyListEvent, currentMap){
         for (c of compList) {
             if (companyListEvent.target.textContent == c.name) {
@@ -72,7 +80,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     marker.setMap(null);
                     marker = null;
                 }
-                worldMap.setZoom(6);
+                worldMap.setZoom(12);
                 marker = new google.maps.Marker({
                     position: markerLatLong,
                     title: c.address,
@@ -84,6 +92,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
+    // Load map for the first time
     function initMap() {
         worldMap = new google.maps.Map(document.getElementById('map'), {
             center : {lat: 30.0599153, lng: 31.262019913},
@@ -91,26 +100,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // refreshing the company list
-    function refreshCoList() {
-        let compJ = localStorage.getItem("companies");
-        if (!compJ) {
-            console.log("refresh grabbing first time");
-            fetch(countryString).then(response => response.json()).then(data => {
-                let json = JSON.stringify(data);
-                localStorage.setItem("companies", json);
-                compList = JSON.parse(localStorage.getItem("companies"));
-                popCoList(compList);
-            } ).catch(error => console.error(error));
-        }
-        else {
-            console.log("refresh grabbing other time");
-            compList = JSON.parse(compJ);
-            popCoList(compList);
-        }
-    }
-
-    // fetching the company list
+    // Fetches the companies for the first time and sets appropriate states for related elements
     function fetchCoListInitial() {
         document.querySelector("#popCompanyList").style.display = "none";
         const loader = generateLoader();
@@ -131,7 +121,7 @@ document.addEventListener("DOMContentLoaded", function() {
             } ).catch(error => console.error(error));
         }
         else {
-            console.log("fetch grabbing other time");
+            console.log("fetch grabbing from storage");
             compList = JSON.parse(compJ);
             popCoList(compList);
             companyList.removeChild(loader);
@@ -140,9 +130,28 @@ document.addEventListener("DOMContentLoaded", function() {
             resultsList.style.display = "block";
             document.querySelector("#clearFilter").style.display = "block";
         }
-        
     }
 
+    // Refreshes the company data
+    function refreshCoList() {
+        let compJ = localStorage.getItem("companies");
+        if (!compJ) {
+            console.log("refresh grabbing first time");
+            fetch(countryString).then(response => response.json()).then(data => {
+                let json = JSON.stringify(data);
+                localStorage.setItem("companies", json);
+                compList = JSON.parse(localStorage.getItem("companies"));
+                popCoList(compList);
+            } ).catch(error => console.error(error));
+        }
+        else {
+            console.log("refresh grabbing from storage");
+            compList = JSON.parse(compJ);
+            popCoList(compList);
+        }
+    }
+
+    // Populates the company list given an array of companies
     function popCoList(popArray) {
         resultsList.innerHTML = "";
         for (let el of popArray) {
@@ -153,12 +162,15 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
+    // Resets the list of companies
     function resetCoList() {
         resultsList.innerHTML = "";
         companyDetails.innerHTML = "";
     }
 
+    // Populates the company information area
     function popCompanyInfo(companyListItem) {
+
         companyDetails.innerHTML = "";
         for (c of compList) {
             if (companyListItem.target.textContent == c.name) {
@@ -198,13 +210,15 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
+    // Filters the list of companies given input text
     function filterCompaniesList(inputText) {
         console.log(String(inputText));
         let filterList = compList;
         filterList = compList.filter(word => word.name.toLowerCase().startsWith(inputText.toLowerCase()));
         popCoList(filterList);
     }
-      
+    
+    // Creates a loader and returns it
     function generateLoader() {
         // The following code was inspired by https://epic-spinners.epicmax.co/ 
         // All credit goes to Epicmax and Vasili Savitski
@@ -220,6 +234,7 @@ document.addEventListener("DOMContentLoaded", function() {
         // credit to Epicmax and Vasili Savitski
     }
 
+    // Highlights a list item that it is passed through css
     function highlightListItem(companyListItem){
       let activeList = document.querySelectorAll('.active');
         for(let a of activeList){
