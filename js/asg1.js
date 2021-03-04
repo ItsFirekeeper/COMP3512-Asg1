@@ -40,8 +40,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
     document.querySelector('#popCompanyList').addEventListener('click', (e) => {
         fetchCoListInitial();
+        // localStorage.setItem("companies", "");
     });
     document.querySelector('#clearFilter').addEventListener('click', (e) => {
+        
         refreshCoList();
         filterBox.value = "";
     });
@@ -63,7 +65,6 @@ document.addEventListener("DOMContentLoaded", function() {
     });
     
     function moveMapMarker(companyListEvent, currentMap){
-        console.log(companyListEvent.target.textContent);
         for (c of compList) {
             if (companyListEvent.target.textContent == c.name) {
                 markerLatLong = {lat: c.latitude, lng: c.longitude };
@@ -92,35 +93,54 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // refreshing the company list
     function refreshCoList() {
-        fetch(countryString).then(response => response.json()).then(data => {
-            compList = [];
-            compList.push(...data);
+        let compJ = localStorage.getItem("companies");
+        if (!compJ) {
+            console.log("refresh grabbing first time");
+            fetch(countryString).then(response => response.json()).then(data => {
+                let json = JSON.stringify(data);
+                localStorage.setItem("companies", json);
+                compList = JSON.parse(localStorage.getItem("companies"));
+                popCoList(compList);
+            } ).catch(error => console.error(error));
+        }
+        else {
+            console.log("refresh grabbing other time");
+            compList = JSON.parse(compJ);
             popCoList(compList);
-        } ).catch(error => console.error(error));
+        }
     }
 
     // fetching the company list
     function fetchCoListInitial() {
-        // go button removed
         document.querySelector("#popCompanyList").style.display = "none";
-        // loader added
         const loader = generateLoader();
         companyList.appendChild(loader);
-        // -------- fetch begins -------- 
-        fetch(countryString).then(response => response.json()).then(data => {
-            let json = JSON.stringify(data);
-            localStorage.setItem("companies", json);
-            compList = JSON.parse(localStorage.getItem("companies"));
-            // -------- fetch ends -------- 
+        let compJ = localStorage.getItem("companies");
+        if (!compJ) {
+            console.log("fetch grabbing first time");
+            fetch(countryString).then(response => response.json()).then(data => {
+                let json = JSON.stringify(data);
+                localStorage.setItem("companies", json);
+                compList = JSON.parse(localStorage.getItem("companies"));
+                popCoList(compList);
+                companyList.removeChild(loader);
+                filterCompanies.style.display = "block";
+                filterLabel.style.display = "block";
+                resultsList.style.display = "block";
+                document.querySelector("#clearFilter").style.display = "block";
+            } ).catch(error => console.error(error));
+        }
+        else {
+            console.log("fetch grabbing other time");
+            compList = JSON.parse(compJ);
             popCoList(compList);
-            // remove loader
             companyList.removeChild(loader);
-            // show company elements
             filterCompanies.style.display = "block";
             filterLabel.style.display = "block";
             resultsList.style.display = "block";
             document.querySelector("#clearFilter").style.display = "block";
-        } ).catch(error => console.error(error));
+        }
+        
     }
 
     function popCoList(popArray) {
