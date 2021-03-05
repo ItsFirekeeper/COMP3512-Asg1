@@ -63,7 +63,7 @@ body {
     margin: 5px;
 }
 
-#companyList {
+#companyList, #stockFormDiv {
     list-style-type: none;
     overflow-y: scroll;
     background-color: white;
