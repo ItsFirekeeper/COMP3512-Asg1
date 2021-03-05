@@ -7,6 +7,8 @@ document.addEventListener("DOMContentLoaded", function() {
     const companyDetails = document.querySelector("#companyDetails");
     const filterCompanies = document.querySelector("#filterCompanies");
     const companyList = document.querySelector("#list-companies");
+    
+    const stockDetails = document.querySelector("#stock-details");
 
     filterCompanies.style.display = "none";
     filterLabel.style.display = "none";
@@ -19,6 +21,7 @@ document.addEventListener("DOMContentLoaded", function() {
     let markerLatLong = {lat: null, lng: null };
     let marker = null;
     let worldMap = null;
+    let stockInfo = [];
     
     initMap();
     
@@ -51,6 +54,7 @@ document.addEventListener("DOMContentLoaded", function() {
             popCompanyInfo(e);
             companyDetails.style.display = "block";
             moveMapMarker(e, worldMap);
+            fetchStockInfo(e);
         }
     });
     document.querySelector('#filterCompanies').addEventListener('input', (e) => {
@@ -62,9 +66,44 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
     
-    
-    document.querySelector('#stock-data'){
+    function fetchStockInfo(companyListEvent){
         
+//        stockDetails.style.display = "none";
+//        const stockLoader = generateLoader();
+//        stockDetails.appendChild(stockLoader);
+        
+        let selectedCompany = getSelectedCompany(companyListEvent);
+        if(selectedCompany != null){
+        const currentStockURL = stocksURL.concat(selectedCompany.symbol);
+        
+            fetch(currentStockURL).then(response => {
+                if (response.ok) {
+                    return response.json();
+                } 
+                else {
+                    return Promise.reject // the problem here is that Promise.reject should be a function ... 
+                ({
+                    status: response.status,
+                    statusText: response.statusText
+                });
+                }
+            }).then(data => {
+
+            stockInfo = [];
+            stockInfo.push(...data);
+            console.log(stockInfo);
+        } ).catch(function (error) {
+            console.log(error);
+        });
+     
+    }
+    }
+    
+    function createStockTable
+    
+    function getSelectedCompany(companyListEvent){
+        let selectedCompany = compList.find(company => company.name == companyListEvent.target.textContent);
+        return selectedCompany;
         
     }
     
