@@ -75,7 +75,6 @@ document.addEventListener("DOMContentLoaded", function() {
         let selectedCompany = getSelectedCompany(companyListEvent);
         if(selectedCompany != null){
         const currentStockURL = stocksURL.concat(selectedCompany.symbol);
-        
             fetch(currentStockURL).then(response => {
                 if (response.ok) {
                     return response.json();
@@ -92,6 +91,7 @@ document.addEventListener("DOMContentLoaded", function() {
             stockInfo = [];
             stockInfo.push(...data);
             console.log(stockInfo);
+            createStockTable(stockInfo);
         } ).catch(function (error) {
             console.log(error);
         });
@@ -99,7 +99,49 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     }
     
-    function createStockTable
+    function createStockTable(stockInfo){
+        
+        const tableBody = document.querySelector("tbody");
+        for(let stock of stockInfo){
+            
+            const row = document.createElement("tr");
+            
+            const tdDate = document.createElement("td");
+            tdDate.textContent = stock.date;
+            
+            row.appendChild(tdDate);
+            
+            const tdOpen = document.createElement("td");
+            tdOpen.textContent = stock.open;
+            
+            row.appendChild(tdOpen);
+
+            const tdClose = document.createElement("td");
+            tdClose.textContent = stock.close;
+
+            row.appendChild(tdClose);
+            
+            const tdLow = document.createElement("td");
+            tdLow.textContent = stock.Low;
+
+            row.appendChild(tdLow);
+            
+            const tdHigh = document.createElement("td");
+            tdHigh.textContent = stock.high;
+
+            row.appendChild(tdHigh);
+            
+            const tdVolume = document.createElement("td");
+            tdVolume.textContent = stock.volume;
+            
+            row.appendChild(tdVolume);
+
+
+            tableBody.appendChild(row);
+            
+        }
+        
+    }
     
     function getSelectedCompany(companyListEvent){
         let selectedCompany = compList.find(company => company.name == companyListEvent.target.textContent);
