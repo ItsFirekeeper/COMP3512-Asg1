@@ -285,29 +285,58 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function popStockData(sD) {
-        stockFormDiv.innerHTML = "";
-        const tbl = document.createElement("table")
-        const trHeader = document.createElement("tr")
-        const dateHeader = document.createElement("th")
-        const openHeader = document.createElement("th")
-        const closeHeader = document.createElement("th")
-        const lowHeader = document.createElement("th")
-        const highHeader = document.createElement("th")
-        const volHeader = document.createElement("th")
-        for (stockListing in sD) {
-            sDate = 
-            sOpen = 
-            sClose = 
-            sLow = 
-            sHigh = 
-            sVol = 
-            stockListing.date
-            stockListing.open
-            stockListing.close
-            stockListing.low
-            stockListing.high
-            stockListing.volume
+        stockDiv.innerHTML = "";
+        const tbl = document.createElement("table");
+        const trHeader = document.createElement("tr");
+        const dateHeader = document.createElement("th");
+        const openHeader = document.createElement("th");
+        const closeHeader = document.createElement("th");
+        const lowHeader = document.createElement("th");
+        const highHeader = document.createElement("th");
+        const volHeader = document.createElement("th");
+        dateHeader.innerHTML = "Date";
+        openHeader.innerHTML = "Open";
+        closeHeader .innerHTML = "Close";
+        lowHeader.innerHTML = "Low";
+        highHeader.innerHTML = "High";
+        volHeader.innerHTML = "Volume";
+        trHeader.appendChild(dateHeader);
+        trHeader.appendChild(openHeader);
+        trHeader.appendChild(closeHeader);
+        trHeader.appendChild(lowHeader);
+        trHeader.appendChild(highHeader);
+        trHeader.appendChild(volHeader);
+        tbl.appendChild(trHeader);
+        console.log(sD);
+        for (stockListing of sD) {
+            const trStockRow = document.createElement("tr");
+            sDate = stockListing.date;
+            console.log(sDate);
+            sOpen = stockListing.open;
+            sClose = stockListing.close;
+            sLow = stockListing.low;
+            sHigh = stockListing.high;
+            sVol = stockListing.volume;
+            const dateVal = document.createElement("td");
+            const openVal = document.createElement("td");
+            const closeVal = document.createElement("td");
+            const lowVal = document.createElement("td");
+            const highVal = document.createElement("td");
+            const volVal = document.createElement("td");
+            dateVal.innerHTML = sDate;
+            openVal.innerHTML = sOpen;
+            closeVal .innerHTML = sClose;
+            lowVal.innerHTML = sLow;
+            highVal.innerHTML = sHigh;
+            volVal.innerHTML = sVol;
+            trStockRow.appendChild(dateVal);
+            trStockRow.appendChild(openVal);
+            trStockRow.appendChild(closeVal);
+            trStockRow.appendChild(lowVal);
+            trStockRow.appendChild(highVal);
+            trStockRow.appendChild(volVal);
+            tbl.appendChild(trStockRow);
         }
-        
+        stockDiv.appendChild(tbl);
     }
 });
