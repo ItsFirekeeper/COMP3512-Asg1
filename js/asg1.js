@@ -170,12 +170,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Populates the company information area
     function popCompanyInfo(companyListItem) {
-
         companyDetails.innerHTML = "";
         for (c of compList) {
             if (companyListItem.target.textContent == c.name) {
                 if (c.symbol != "") {
-                    // const logo = document.createElement("");
+                    let imgString = "../logos/" + c.symbol + ".svg";
+                    console.log(imgString);
+                    const logo = document.createElement("img");
                     const symbol = document.createElement("p");
                     const name = document.createElement("p");
                     const sector = document.createElement("p");
@@ -184,6 +185,8 @@ document.addEventListener("DOMContentLoaded", function() {
                     const website = document.createElement("p");
                     const exchange = document.createElement("p");
                     const description = document.createElement("p");
+                    logo.src = imgString;
+                    logo.setAttribute("id", "logoPhoto");
                     symbol.textContent = `Symbol: ${c.symbol}`;
                     name.textContent = `Name: ${c.name}`;
                     sector.textContent = `Sector: ${c.sector}`;
@@ -192,6 +195,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     website.textContent = `Website: ${c.website}`;
                     exchange.textContent = `Exchange: ${c.exchange}`;
                     description.textContent = `Description: ${c.description}`;
+                    companyDetails.appendChild(logo);
                     companyDetails.appendChild(symbol);
                     companyDetails.appendChild(name);
                     companyDetails.appendChild(sector);

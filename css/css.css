@@ -161,3 +161,10 @@ credit to Epicmax and Vasili Savitski
     background-color: cornflowerblue;
     color: white;
 }
+
+#logoPhoto {
+  max-height: 100px;
+  max-width: 100px;
+  height: auto;
+  width: auto;
+}
