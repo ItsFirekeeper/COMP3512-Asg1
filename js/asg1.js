@@ -34,7 +34,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Event listener for credit section at the top of the page - display names of developers
     document.querySelector('#credits').addEventListener('mouseover', (e) => {
-        if (e.target.nodeName.toLowerCase() == 'i') {
+        if (e.target.nodeName.toLowerCase() == 'i' || e.target.nodeName.toLowerCase() == 'h3') {
             if (creditLoop) {
                 creditLoop = false;
                 const names = document.createElement("div");
@@ -80,6 +80,14 @@ document.addEventListener("DOMContentLoaded", function() {
         else {
             popCoList(compList);
         }
+    });
+
+    //code inspired by https://flaviocopes.com/how-to-add-event-listener-multiple-elements-javascript/
+    document.querySelectorAll('.toggleChartButton').forEach(btn => {
+        console.log("yes");
+        btn.addEventListener('click', (e) => {
+            toggleChartView();
+        });
     });
     
     // Move the map marker to the specified company location
@@ -335,5 +343,26 @@ document.addEventListener("DOMContentLoaded", function() {
         trHeader.appendChild(highHeader);
         trHeader.appendChild(volHeader);
         return trHeader;
+    }
+
+    function toggleChartView() {
+        const main = document.querySelector("#mainView");
+        const chart = document.querySelector("#chartView");
+        if (main.classList.contains("showSection") && chart.classList.contains("hideSection")) {
+            console.log("fruck");
+            console.log(main.classList);
+            main.classList.remove("showSection");
+            main.classList.add("hideSection");
+            chart.classList.remove("hideSection");
+            chart.classList.add("showSection");
+        }
+        else {
+            console.log("frick");
+            console.log(main.classList);
+            main.classList.remove("hideSection");
+            main.classList.add("showSection");
+            chart.classList.remove("showSection");
+            chart.classList.add("hideSection");
+        }
     }
 });

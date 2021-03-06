@@ -19,37 +19,53 @@
                     </div>
                 </section>  
             </div>
-            <div class="section" id="list-companies">
-                <section>
-                    <h2>List of Companies</h2>
-                    <label for="filter" id="filterLabel">Filter:</label>
-                    <input type="text" id="filterCompanies" name="filter"><br>
-                    <button id="popCompanyList">Go</button>
-                    <button id="clearFilter">Clear Filter</button>
-                    <ul id="companyList"></ul>
-                </section>  	
+            <div id="mainView" class="showSection">
+                <div class="section" id="list-companies">
+                    <section>
+                        <h2>List of Companies</h2>
+                        <label for="filter" id="filterLabel">Filter:</label>
+                        <input type="text" id="filterCompanies" name="filter"><br>
+                        <button id="popCompanyList">Go</button>
+                        <button id="clearFilter">Clear Filter</button>
+                        <ul id="companyList"></ul>
+                    </section>  	
+                </div>
+                <div class="section" id="company-info">
+                    <section>
+                        <h2>Company Information</h2>
+                        <div id="companyDetails"></div>
+                    </section>  
+                </div>
+                <div class="section" id="map">
+                    <section>
+                        <h2>Map</h2>
+                        <div id="map"></div>
+                    </section>
+                </div>
+                <div class="section" id="stock-data">
+                    <section>
+                        <button class="toggleChartButton">View Charts</button>
+                        <div id="stockFormDiv"></div>
+                    </section>
+                </div>
+                <div class="section" id="stock-data-secondary">
+                    <section>
+                        
+                    </section>
+                </div>
             </div>
-            <div class="section" id="company-info">
-                <section>
-                    <h2>Company Information</h2>
-                    <div id="companyDetails"></div>
-                </section>  
-            </div>
-            <div class="section" id="map">
-                <section>
-                    <h2>Map</h2>
-                    <div id="map"></div>
-                </section>
-            </div>
-            <div class="section" id="stock-data">
-                <section>
-                    <div id="stockFormDiv"></div>
-                </section>
-            </div>
-            <div class="section" id="stock-data-secondary">
-                <section>
+            <div id="chartView" class="hideSection">
+                <div class="section" id="charts">
+                    <h2>Charts</h2>
+                </div>
+                <div class="section" id="compNameSym">
+                    <h2>Company Name + Symbol</h2>
+                    <button class="toggleChartButton">Close</button>
+                </div>
+                <div class="section" id="financials">
+                    <h2>Financials</h2>
                     
-                </section>
+                </div>
             </div>
         </main>
         <script src="js/asg1.js"></script> 
