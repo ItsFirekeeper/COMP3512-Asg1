@@ -10,7 +10,7 @@ body {
     display: inline;
 }
 
-.container {
+.container #mainView, .container #chartView {
     display: grid;
     grid-gap: 15px;
     grid-template-columns: 20% 40% auto;
@@ -28,6 +28,7 @@ body {
     grid-row: 1 / span 1;
 }
 
+/* Start main section */
 #list-companies {
     grid-column: 1 / span 1;
     grid-row: 2 / span 2;
@@ -37,11 +38,13 @@ body {
 #map {
     grid-column: 2 / span 1;
     grid-row: 3 / span 1;
+    min-height: 300px;
 }
 
 #company-info {
     grid-column: 2 / span 1;
     grid-row: 2 / span 1;
+    height: auto;
 }
 
 #stock-data {
@@ -53,6 +56,24 @@ body {
     grid-column: 3 / span 1;
     grid-row: 3 / span 1;
 }
+/* End main section */
+
+/* Start stock section */
+#charts {
+  grid-column: 1 / span 2;
+  grid-row: 2 / span 3;
+}
+
+#compNameSym {
+  grid-column: 3 / span 1;
+  grid-row: 2 / span 1;
+}
+
+#financials {
+  grid-column: 3 / span 1;
+  grid-row: 3 / span 2;
+}
+/* End stock section */
 
 .credit-class {
     background-color: orange;
@@ -63,7 +84,7 @@ body {
     margin: 5px;
 }
 
-#companyList, #stockFormDiv {
+#companyList {
     list-style-type: none;
     overflow-y: scroll;
     background-color: white;
@@ -73,6 +94,19 @@ body {
     padding-left: 5%;
     padding-top: 3%;
     padding-bottom: 3%;
+}
+
+#stockFormDiv {
+  list-style-type: none;
+  overflow-y: scroll;
+  overflow-x: scroll;
+  background-color: white;
+  border: 1px solid black;
+  height: 300px;
+  margin: 0px;
+  padding-left: 5%;
+  padding-top: 3%;
+  padding-bottom: 3%;
 }
 
 #companyDetails {
@@ -167,4 +201,12 @@ credit to Epicmax and Vasili Savitski
   max-width: 100px;
   height: auto;
   width: auto;
+}
+
+.showSection {
+  display: grid !important;
+}
+
+.hideSection {
+  display: none !important;
 }
