@@ -7,21 +7,31 @@ document.addEventListener("DOMContentLoaded", function() {
     const companyDetails = document.querySelector("#companyDetails");
     const filterCompanies = document.querySelector("#filterCompanies");
     const companyList = document.querySelector("#list-companies");
-
-    filterCompanies.style.display = "none";
-    filterLabel.style.display = "none";
-    resultsList.style.display = "none";
-    companyDetails.style.display = "none";
-    document.querySelector("#clearFilter").style.display = "none";
-     
+    const companyInfoHeader = document.querySelector("#company-info section h2");
+    const stockDiv = document.querySelector("#stockFormDiv");
+ 
     let creditLoop = true;
     let compList = [];
+    let stockData = [];
     let markerLatLong = {lat: null, lng: null };
     let marker = null;
     let worldMap = null;
     
+    initDisplayElementHide()
+
     initMap();
     
+    // hides elements on load
+    function initDisplayElementHide() {
+        filterCompanies.style.display = "none";
+        filterLabel.style.display = "none";
+        resultsList.style.display = "none";
+        companyDetails.style.display = "none";
+        companyInfoHeader.style.display = "none";
+        stockDiv.style.display = "none";
+        document.querySelector("#clearFilter").style.display = "none";
+    }
+
     // Event listener for credit section at the top of the page - display names of developers
     document.querySelector('#credits').addEventListener('mouseover', (e) => {
         if (e.target.nodeName.toLowerCase() == 'i') {
@@ -56,6 +66,7 @@ document.addEventListener("DOMContentLoaded", function() {
         if (e.target.nodeName.toLowerCase() == 'li') {
             highlightListItem(e);
             popCompanyInfo(e);
+            fetchStocks(e);
             companyDetails.style.display = "block";
             moveMapMarker(e, worldMap);
         }
@@ -117,6 +128,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 filterCompanies.style.display = "block";
                 filterLabel.style.display = "block";
                 resultsList.style.display = "block";
+                companyInfoHeader.style.display = "block";
                 document.querySelector("#clearFilter").style.display = "block";
             } ).catch(error => console.error(error));
         }
@@ -128,6 +140,7 @@ document.addEventListener("DOMContentLoaded", function() {
             filterCompanies.style.display = "block";
             filterLabel.style.display = "block";
             resultsList.style.display = "block";
+            companyInfoHeader.style.display = "block";
             document.querySelector("#clearFilter").style.display = "block";
         }
     }
@@ -245,5 +258,82 @@ document.addEventListener("DOMContentLoaded", function() {
             a.classList.remove("active");
         }
         companyListItem.target.classList.add('active');
+    }
+
+    // Fetches stock data based on the list item passed
+    function fetchStocks(stock) {
+        for (c of compList) {
+            if (stock.target.textContent == c.name) {
+                localStorage.setItem("stockdata", "");
+                queryString = stocksURL + c.symbol
+                let stockJ = localStorage.getItem("stockdata");
+                if (!stockJ) {
+                    fetch(queryString).then(response => response.json()).then(data => {
+                        let json = JSON.stringify(data);
+                        localStorage.setItem("stockdata", json);
+                        stockData = JSON.parse(localStorage.getItem("stockdata"));
+                        stockDiv.style.display = "block";
+                        popStockData(stockData);
+                    } ).catch(error => console.error(error));
+                }
+                else {
+                    stockData = JSON.parse(stockJ);
+                    popStockData(stockData);
+                }
+            }
+        }
+    }
+
+    function popStockData(sD) {
+        stockDiv.innerHTML = "";
+        const tbl = document.createElement("table");
+        stockHd = stockHeader();
+        tbl.appendChild(stockHd);
+        for (stockListing of sD) {
+            const trStockRow = document.createElement("tr");
+            const dateVal = document.createElement("td");
+            const openVal = document.createElement("td");
+            const closeVal = document.createElement("td");
+            const lowVal = document.createElement("td");
+            const highVal = document.createElement("td");
+            const volVal = document.createElement("td");
+            dateVal.innerHTML = stockListing.date;
+            openVal.innerHTML = stockListing.open;
+            closeVal .innerHTML = stockListing.close;
+            lowVal.innerHTML = stockListing.low;
+            highVal.innerHTML = stockListing.high;
+            volVal.innerHTML = stockListing.volume;
+            trStockRow.appendChild(dateVal);
+            trStockRow.appendChild(openVal);
+            trStockRow.appendChild(closeVal);
+            trStockRow.appendChild(lowVal);
+            trStockRow.appendChild(highVal);
+            trStockRow.appendChild(volVal);
+            tbl.appendChild(trStockRow);
+        }
+        stockDiv.appendChild(tbl);
+    }
+
+    function stockHeader() {
+        const trHeader = document.createElement("tr");
+        const dateHeader = document.createElement("th");
+        const openHeader = document.createElement("th");
+        const closeHeader = document.createElement("th");
+        const lowHeader = document.createElement("th");
+        const highHeader = document.createElement("th");
+        const volHeader = document.createElement("th");
+        dateHeader.innerHTML = "Date";
+        openHeader.innerHTML = "Open";
+        closeHeader .innerHTML = "Close";
+        lowHeader.innerHTML = "Low";
+        highHeader.innerHTML = "High";
+        volHeader.innerHTML = "Volume";
+        trHeader.appendChild(dateHeader);
+        trHeader.appendChild(openHeader);
+        trHeader.appendChild(closeHeader);
+        trHeader.appendChild(lowHeader);
+        trHeader.appendChild(highHeader);
+        trHeader.appendChild(volHeader);
+        return trHeader;
     }
 });
