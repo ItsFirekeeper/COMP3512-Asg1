@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const companyList = document.querySelector("#list-companies");
     const companyInfoHeader = document.querySelector("#company-info section h2");
     const stockDiv = document.querySelector("#stockFormDiv");
+    const stockDivSecondary = document.querySelector("#stockFormSecondary");
  
     let creditLoop = true;
     let compList = [];
@@ -281,11 +282,13 @@ document.addEventListener("DOMContentLoaded", function() {
                         stockData = JSON.parse(localStorage.getItem("stockdata"));
                         stockDiv.style.display = "block";
                         popStockData(stockData);
+                        popStockSecondary(stockData);
                     } ).catch(error => console.error(error));
                 }
                 else {
                     stockData = JSON.parse(stockJ);
                     popStockData(stockData);
+                    popStockSecondary(stockData);
                 }
             }
         }
@@ -446,5 +449,93 @@ document.addEventListener("DOMContentLoaded", function() {
             });
             popStockData(volSort);
         }
+    }
+
+    function popStockSecondary(sD) {
+        stockDivSecondary.innerHTML = "";
+        let secondaryArray = [
+            ["open", generateValArray(sD, "open")], 
+            ["close", generateValArray(sD, "close")], 
+            ["low", generateValArray(sD, "low")], 
+            ["high", generateValArray(sD, "high")], 
+            ["volume", generateValArray(sD, "volume")]
+        ];
+        let tblArray = [];
+        for (ar of secondaryArray) {
+            const colName = ar[0];
+            const mMA = genMinMaxAvg(ar[1]);
+            const min = mMA[0];
+            const max = mMA[1];
+            const avg = mMA[2];
+            tblArray.push([mMA[0], mMA[1], mMA[2]]);
+        }
+        tblArray = tableFlip(tblArray);
+        console.log(tblArray);
+        const tbl = document.createElement("table");
+        const headerRow = document.createElement("tr");
+        const blankHeader = document.createElement("th"); 
+        const openHeader = document.createElement("th");
+        const closeHeader = document.createElement("th");
+        const lowHeader = document.createElement("th");
+        const highHeader = document.createElement("th");
+        const volHeader = document.createElement("th");
+        headerRow.appendChild(blankHeader);
+        headerRow.appendChild(openHeader);
+        headerRow.appendChild(closeHeader);
+        headerRow.appendChild(lowHeader);
+        headerRow.appendChild(highHeader);
+        headerRow.appendChild(volHeader);
+        tbl.appendChild(headerRow);
+        for (row of tblArray) {
+            const rw = document.createElement("tr");
+            const open = document.createElement("th"); 
+            const close = document.createElement("th");
+            const low = document.createElement("th");
+            const high = document.createElement("th");
+            const vol = document.createElement("th");
+            open.textContent = row[0];
+            close.textContent = row[1];
+            low.textContent = row[2];
+            high.textContent = row[3];
+            vol.textContent = row[4];
+            rw.appendChild(open);
+            rw.appendChild(close);
+            rw.appendChild(low);
+            rw.appendChild(high);
+            rw.appendChild(vol);
+            tbl.appendChild(rw);
+        }
+        stockDivSecondary.appendChild(tbl);
+    }
+
+    function generateValArray(array, prop) {
+        let returnArray = [];
+        for (ele of array) {
+            returnArray.push(ele[prop]);
+        }
+        return returnArray;
+    }
+
+    function genMinMaxAvg(valArray) {
+        let sum = 0;
+        for (v of valArray) {
+            sum += parseFloat(v);
+        }
+        let avg = sum / valArray.length;
+        // referred to https://medium.com/@vladbezden/how-to-get-min-or-max-of-an-array-in-javascript-1c264ec6e1aa for specific use information
+        const retArray = [Math.min(...valArray), Math.max(...valArray), avg];
+        return retArray;
+    }
+
+    function tableFlip(array) {
+        const rowCount = array.length;
+        const colCount = array[0].length;
+        retArray = [[],[],[]];
+        for (let row = 0; row < rowCount; row++) {
+            for (let col = 0; col < colCount; col++) {
+                retArray[col][row] = array[row][col];
+            }
+        }
+        return retArray;
     }
 });
