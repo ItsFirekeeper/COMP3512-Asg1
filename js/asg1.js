@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", function() {
+    
     const countryString = "http://www.randyconnolly.com/funwebdev/3rd/api/stocks/companies.php";
     const stocksURL = "http://www.randyconnolly.com/funwebdev/3rd/api/stocks/history.php?symbol=";
     const wrapDiv = document.querySelector("#credits");
@@ -339,4 +340,5 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         stockDiv.appendChild(tbl);
     }
+
 });
