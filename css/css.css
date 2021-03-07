@@ -210,3 +210,7 @@ credit to Epicmax and Vasili Savitski
 .hideSection {
   display: none !important;
 }
+
+#companyList #countryItem, #stockFormDiv table tr th {
+  cursor: pointer;
+}
