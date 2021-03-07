@@ -473,13 +473,16 @@ document.addEventListener("DOMContentLoaded", function() {
         console.log(tblArray);
         const tbl = document.createElement("table");
         const headerRow = document.createElement("tr");
-        const blankHeader = document.createElement("th"); 
         const openHeader = document.createElement("th");
         const closeHeader = document.createElement("th");
         const lowHeader = document.createElement("th");
         const highHeader = document.createElement("th");
         const volHeader = document.createElement("th");
-        headerRow.appendChild(blankHeader);
+        openHeader.innerHTML = "Open";
+        closeHeader .innerHTML = "Close";
+        lowHeader.innerHTML = "Low";
+        highHeader.innerHTML = "High";
+        volHeader.innerHTML = "Volume";
         headerRow.appendChild(openHeader);
         headerRow.appendChild(closeHeader);
         headerRow.appendChild(lowHeader);
