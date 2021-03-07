@@ -84,12 +84,17 @@ document.addEventListener("DOMContentLoaded", function() {
 
     //code inspired by https://flaviocopes.com/how-to-add-event-listener-multiple-elements-javascript/
     document.querySelectorAll('.toggleChartButton').forEach(btn => {
-        console.log("yes");
         btn.addEventListener('click', (e) => {
             toggleChartView();
         });
     });
     
+    document.querySelector('#stockFormDiv').addEventListener('click', (e) => {
+        if (e.target.nodeName.toLowerCase() == 'th') {
+            sortStocks(e.target.innerHTML);
+        }
+    });
+
     // Move the map marker to the specified company location
     function moveMapMarker(companyListEvent, currentMap){
         for (c of compList) {
@@ -126,7 +131,6 @@ document.addEventListener("DOMContentLoaded", function() {
         companyList.appendChild(loader);
         let compJ = localStorage.getItem("companies");
         if (!compJ) {
-            console.log("fetch grabbing first time");
             fetch(countryString).then(response => response.json()).then(data => {
                 let json = JSON.stringify(data);
                 localStorage.setItem("companies", json);
@@ -141,7 +145,6 @@ document.addEventListener("DOMContentLoaded", function() {
             } ).catch(error => console.error(error));
         }
         else {
-            console.log("fetch grabbing from storage");
             compList = JSON.parse(compJ);
             popCoList(compList);
             companyList.removeChild(loader);
@@ -157,7 +160,6 @@ document.addEventListener("DOMContentLoaded", function() {
     function refreshCoList() {
         let compJ = localStorage.getItem("companies");
         if (!compJ) {
-            console.log("refresh grabbing first time");
             fetch(countryString).then(response => response.json()).then(data => {
                 let json = JSON.stringify(data);
                 localStorage.setItem("companies", json);
@@ -166,7 +168,6 @@ document.addEventListener("DOMContentLoaded", function() {
             } ).catch(error => console.error(error));
         }
         else {
-            console.log("refresh grabbing from storage");
             compList = JSON.parse(compJ);
             popCoList(compList);
         }
@@ -196,7 +197,6 @@ document.addEventListener("DOMContentLoaded", function() {
             if (companyListItem.target.textContent == c.name) {
                 if (c.symbol != "") {
                     let imgString = "../logos/" + c.symbol + ".svg";
-                    console.log(imgString);
                     const logo = document.createElement("img");
                     const symbol = document.createElement("p");
                     const name = document.createElement("p");
@@ -237,7 +237,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Filters the list of companies given input text
     function filterCompaniesList(inputText) {
-        console.log(String(inputText));
         let filterList = compList;
         filterList = compList.filter(word => word.name.toLowerCase().startsWith(inputText.toLowerCase()));
         popCoList(filterList);
@@ -349,20 +348,103 @@ document.addEventListener("DOMContentLoaded", function() {
         const main = document.querySelector("#mainView");
         const chart = document.querySelector("#chartView");
         if (main.classList.contains("showSection") && chart.classList.contains("hideSection")) {
-            console.log("fruck");
-            console.log(main.classList);
             main.classList.remove("showSection");
             main.classList.add("hideSection");
             chart.classList.remove("hideSection");
             chart.classList.add("showSection");
         }
         else {
-            console.log("frick");
-            console.log(main.classList);
             main.classList.remove("hideSection");
             main.classList.add("showSection");
             chart.classList.remove("showSection");
             chart.classList.add("hideSection");
+        }
+    }
+
+    function sortStocks(sortType) {
+        if (sortType == "Date") {
+            const dateSort = stockData.sort( function(a,b) {
+                if (a.date < b.date) {
+                    return -1;
+                }
+                else if (a.date > b.date) {
+                    return 1;
+                }
+                else {
+                    return 0;
+                }
+            });
+            popStockData(dateSort);
+        }
+        else if (sortType == "Open") {
+            const openSort = stockData.sort( function(a,b) {
+                if (a.open < b.open) {
+                    return -1;
+                }
+                else if (a.open > b.open) {
+                    return 1;
+                }
+                else {
+                    return 0;
+                }
+            });
+            popStockData(openSort);
+        }
+        else if (sortType == "Close") {
+            const closeSort = stockData.sort( function(a,b) {
+                if (a.close < b.close) {
+                    return -1;
+                }
+                else if (a.close > b.close) {
+                    return 1;
+                }
+                else {
+                    return 0;
+                }
+            });
+            popStockData(closeSort);
+        }
+        else if (sortType == "Low") {
+            const lowSort = stockData.sort( function(a,b) {
+                if (a.low < b.low) {
+                    return -1;
+                }
+                else if (a.low > b.low) {
+                    return 1;
+                }
+                else {
+                    return 0;
+                }
+            });
+            popStockData(lowSort);
+        }
+        else if (sortType == "High") {
+            const highSort = stockData.sort( function(a,b) {
+                if (a.high < b.high) {
+                    return -1;
+                }
+                else if (a.high > b.high) {
+                    return 1;
+                }
+                else {
+                    return 0;
+                }
+            });
+            popStockData(highSort);
+        }
+        else if (sortType == "Volume") {
+            const volSort = stockData.sort( function(a,b) {
+                if (a.volume < b.volume) {
+                    return -1;
+                }
+                else if (a.volume > b.volume) {
+                    return 1;
+                }
+                else {
+                    return 0;
+                }
+            });
+            popStockData(volSort);
         }
     }
 });
