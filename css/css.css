@@ -96,7 +96,7 @@ body {
     padding-bottom: 3%;
 }
 
-#stockFormDiv {
+#stockFormDiv, #stockFormSecondary {
   list-style-type: none;
   overflow-y: scroll;
   overflow-x: scroll;
@@ -224,4 +224,8 @@ credit to Epicmax and Vasili Savitski
 
 .hideSection {
   display: none !important;
+}
+
+#companyList #countryItem, #stockFormDiv table tr th {
+  cursor: pointer;
 }
