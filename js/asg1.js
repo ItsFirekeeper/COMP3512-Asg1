@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const companyList = document.querySelector("#list-companies");
     const companyInfoHeader = document.querySelector("#company-info section h2");
     const stockDiv = document.querySelector("#stockFormDiv");
+    const stockDivSecondary = document.querySelector("#stockFormSecondary");
  
     let creditLoop = true;
     let compList = [];
@@ -84,12 +85,17 @@ document.addEventListener("DOMContentLoaded", function() {
 
     //code inspired by https://flaviocopes.com/how-to-add-event-listener-multiple-elements-javascript/
     document.querySelectorAll('.toggleChartButton').forEach(btn => {
-        console.log("yes");
         btn.addEventListener('click', (e) => {
             toggleChartView();
         });
     });
     
+    document.querySelector('#stockFormDiv').addEventListener('click', (e) => {
+        if (e.target.nodeName.toLowerCase() == 'th') {
+            sortStocks(e.target.innerHTML);
+        }
+    });
+
     // Move the map marker to the specified company location
     function moveMapMarker(companyListEvent, currentMap){
         for (c of compList) {
@@ -126,7 +132,6 @@ document.addEventListener("DOMContentLoaded", function() {
         companyList.appendChild(loader);
         let compJ = localStorage.getItem("companies");
         if (!compJ) {
-            console.log("fetch grabbing first time");
             fetch(countryString).then(response => response.json()).then(data => {
                 let json = JSON.stringify(data);
                 localStorage.setItem("companies", json);
@@ -141,7 +146,6 @@ document.addEventListener("DOMContentLoaded", function() {
             } ).catch(error => console.error(error));
         }
         else {
-            console.log("fetch grabbing from storage");
             compList = JSON.parse(compJ);
             popCoList(compList);
             companyList.removeChild(loader);
@@ -157,7 +161,6 @@ document.addEventListener("DOMContentLoaded", function() {
     function refreshCoList() {
         let compJ = localStorage.getItem("companies");
         if (!compJ) {
-            console.log("refresh grabbing first time");
             fetch(countryString).then(response => response.json()).then(data => {
                 let json = JSON.stringify(data);
                 localStorage.setItem("companies", json);
@@ -166,7 +169,6 @@ document.addEventListener("DOMContentLoaded", function() {
             } ).catch(error => console.error(error));
         }
         else {
-            console.log("refresh grabbing from storage");
             compList = JSON.parse(compJ);
             popCoList(compList);
         }
@@ -196,7 +198,6 @@ document.addEventListener("DOMContentLoaded", function() {
             if (companyListItem.target.textContent == c.name) {
                 if (c.symbol != "") {
                     let imgString = "../logos/" + c.symbol + ".svg";
-                    console.log(imgString);
                     const logo = document.createElement("img");
                     const symbol = document.createElement("p");
                     const name = document.createElement("p");
@@ -237,7 +238,6 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Filters the list of companies given input text
     function filterCompaniesList(inputText) {
-        console.log(String(inputText));
         let filterList = compList;
         filterList = compList.filter(word => word.name.toLowerCase().startsWith(inputText.toLowerCase()));
         popCoList(filterList);
@@ -282,11 +282,13 @@ document.addEventListener("DOMContentLoaded", function() {
                         stockData = JSON.parse(localStorage.getItem("stockdata"));
                         stockDiv.style.display = "block";
                         popStockData(stockData);
+                        popStockSecondary(stockData);
                     } ).catch(error => console.error(error));
                 }
                 else {
                     stockData = JSON.parse(stockJ);
                     popStockData(stockData);
+                    popStockSecondary(stockData);
                 }
             }
         }
@@ -349,20 +351,194 @@ document.addEventListener("DOMContentLoaded", function() {
         const main = document.querySelector("#mainView");
         const chart = document.querySelector("#chartView");
         if (main.classList.contains("showSection") && chart.classList.contains("hideSection")) {
-            console.log("fruck");
-            console.log(main.classList);
             main.classList.remove("showSection");
             main.classList.add("hideSection");
             chart.classList.remove("hideSection");
             chart.classList.add("showSection");
         }
         else {
-            console.log("frick");
-            console.log(main.classList);
             main.classList.remove("hideSection");
             main.classList.add("showSection");
             chart.classList.remove("showSection");
             chart.classList.add("hideSection");
         }
+    }
+
+    function sortStocks(sortType) {
+        if (sortType == "Date") {
+            const dateSort = stockData.sort( function(a,b) {
+                if (a.date < b.date) {
+                    return -1;
+                }
+                else if (a.date > b.date) {
+                    return 1;
+                }
+                else {
+                    return 0;
+                }
+            });
+            popStockData(dateSort);
+        }
+        else if (sortType == "Open") {
+            const openSort = stockData.sort( function(a,b) {
+                if (a.open < b.open) {
+                    return -1;
+                }
+                else if (a.open > b.open) {
+                    return 1;
+                }
+                else {
+                    return 0;
+                }
+            });
+            popStockData(openSort);
+        }
+        else if (sortType == "Close") {
+            const closeSort = stockData.sort( function(a,b) {
+                if (a.close < b.close) {
+                    return -1;
+                }
+                else if (a.close > b.close) {
+                    return 1;
+                }
+                else {
+                    return 0;
+                }
+            });
+            popStockData(closeSort);
+        }
+        else if (sortType == "Low") {
+            const lowSort = stockData.sort( function(a,b) {
+                if (a.low < b.low) {
+                    return -1;
+                }
+                else if (a.low > b.low) {
+                    return 1;
+                }
+                else {
+                    return 0;
+                }
+            });
+            popStockData(lowSort);
+        }
+        else if (sortType == "High") {
+            const highSort = stockData.sort( function(a,b) {
+                if (a.high < b.high) {
+                    return -1;
+                }
+                else if (a.high > b.high) {
+                    return 1;
+                }
+                else {
+                    return 0;
+                }
+            });
+            popStockData(highSort);
+        }
+        else if (sortType == "Volume") {
+            const volSort = stockData.sort( function(a,b) {
+                if (a.volume < b.volume) {
+                    return -1;
+                }
+                else if (a.volume > b.volume) {
+                    return 1;
+                }
+                else {
+                    return 0;
+                }
+            });
+            popStockData(volSort);
+        }
+    }
+
+    function popStockSecondary(sD) {
+        stockDivSecondary.innerHTML = "";
+        let secondaryArray = [
+            ["open", generateValArray(sD, "open")], 
+            ["close", generateValArray(sD, "close")], 
+            ["low", generateValArray(sD, "low")], 
+            ["high", generateValArray(sD, "high")], 
+            ["volume", generateValArray(sD, "volume")]
+        ];
+        let tblArray = [];
+        for (ar of secondaryArray) {
+            const colName = ar[0];
+            const mMA = genMinMaxAvg(ar[1]);
+            const min = mMA[0];
+            const max = mMA[1];
+            const avg = mMA[2];
+            tblArray.push([mMA[0], mMA[1], mMA[2]]);
+        }
+        tblArray = tableFlip(tblArray);
+        console.log(tblArray);
+        const tbl = document.createElement("table");
+        const headerRow = document.createElement("tr");
+        const openHeader = document.createElement("th");
+        const closeHeader = document.createElement("th");
+        const lowHeader = document.createElement("th");
+        const highHeader = document.createElement("th");
+        const volHeader = document.createElement("th");
+        openHeader.innerHTML = "Open";
+        closeHeader .innerHTML = "Close";
+        lowHeader.innerHTML = "Low";
+        highHeader.innerHTML = "High";
+        volHeader.innerHTML = "Volume";
+        headerRow.appendChild(openHeader);
+        headerRow.appendChild(closeHeader);
+        headerRow.appendChild(lowHeader);
+        headerRow.appendChild(highHeader);
+        headerRow.appendChild(volHeader);
+        tbl.appendChild(headerRow);
+        for (row of tblArray) {
+            const rw = document.createElement("tr");
+            const open = document.createElement("th"); 
+            const close = document.createElement("th");
+            const low = document.createElement("th");
+            const high = document.createElement("th");
+            const vol = document.createElement("th");
+            open.textContent = row[0];
+            close.textContent = row[1];
+            low.textContent = row[2];
+            high.textContent = row[3];
+            vol.textContent = row[4];
+            rw.appendChild(open);
+            rw.appendChild(close);
+            rw.appendChild(low);
+            rw.appendChild(high);
+            rw.appendChild(vol);
+            tbl.appendChild(rw);
+        }
+        stockDivSecondary.appendChild(tbl);
+    }
+
+    function generateValArray(array, prop) {
+        let returnArray = [];
+        for (ele of array) {
+            returnArray.push(ele[prop]);
+        }
+        return returnArray;
+    }
+
+    function genMinMaxAvg(valArray) {
+        let sum = 0;
+        for (v of valArray) {
+            sum += parseFloat(v);
+        }
+        let avg = sum / valArray.length;
+        // referred to https://medium.com/@vladbezden/how-to-get-min-or-max-of-an-array-in-javascript-1c264ec6e1aa for specific use information
+        const retArray = [Math.min(...valArray), Math.max(...valArray), avg];
+        return retArray;
+    }
+
+    function tableFlip(array) {
+        const rowCount = array.length;
+        const colCount = array[0].length;
+        retArray = [[],[],[]];
+        for (let row = 0; row < rowCount; row++) {
+            for (let col = 0; col < colCount; col++) {
+                retArray[col][row] = array[row][col];
+            }
+        }
+        return retArray;
     }
 });
