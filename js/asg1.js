@@ -204,11 +204,10 @@ document.addEventListener("DOMContentLoaded", function() {
     // Populates the company information area
     function popCompanyInfo(companyListItem) {
         companyDetails.innerHTML = "";
-   selectedCompany = compList.find(company => company.name == companyListItem.target.textContent);
+        selectedCompany = compList.find(company => company.name == companyListItem.target.textContent);
             if (selectedCompany != null) {
                 if (selectedCompany.symbol != "") {
                     let imgString = "../logos/" + selectedCompany.symbol + ".svg";
-                    console.log(imgString);
                     const logo = document.createElement("img");
                     const symbol = document.createElement("p");
                     const name = document.createElement("p");
@@ -321,6 +320,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
                 else {
                     stockData = JSON.parse(stockJ);
+                    console.log(stockData);
                     popStockData(stockData);
                     popStockSecondary(stockData);
                 }
@@ -329,7 +329,6 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function popStockData(sD) {
-                console.log("here");
         stockDiv.innerHTML = "";
         const tbl = document.createElement("table");
         stockHd = stockHeader();
@@ -538,10 +537,10 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         else if (sortType == "Open") {
             const openSort = stockData.sort( function(a,b) {
-                if (a.open > b.open) {
+                if (parseFloat(a.open) > parseFloat(b.open)) {
                     return -1;
                 }
-                else if (a.open < b.open) {
+                else if (parseFloat(a.open) < parseFloat(b.open)) {
                     return 1;
                 }
                 else {
@@ -552,10 +551,10 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         else if (sortType == "Close") {
             const closeSort = stockData.sort( function(a,b) {
-                if (a.close > b.close) {
+                if (parseFloat(a.close) > parseFloat(b.close)) {
                     return -1;
                 }
-                else if (a.close < b.close) {
+                else if (parseFloat(a.close) < parseFloat(b.close)) {
                     return 1;
                 }
                 else {
@@ -566,10 +565,10 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         else if (sortType == "Low") {
             const lowSort = stockData.sort( function(a,b) {
-                if (a.low > b.low) {
+                if (parseFloat(a.low) > parseFloat(b.low)) {
                     return -1;
                 }
-                else if (a.low < b.low) {
+                else if (parseFloat(a.low) < parseFloat(b.low)) {
                     return 1;
                 }
                 else {
@@ -580,10 +579,10 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         else if (sortType == "High") {
             const highSort = stockData.sort( function(a,b) {
-                if (a.high > b.high) {
+                if (parseFloat(a.high) > parseFloat(b.high)) {
                     return -1;
                 }
-                else if (a.high < b.high) {
+                else if (parseFloat(a.high) < parseFloat(b.high)) {
                     return 1;
                 }
                 else {
@@ -594,10 +593,10 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         else if (sortType == "Volume") {
             const volSort = stockData.sort( function(a,b) {
-                if (a.volume > b.volume) {
+                if (parseFloat(a.volume) > parseFloat(b.volume)) {
                     return -1;
                 }
-                else if (a.volume < b.volume) {
+                else if (parseFloat(a.volume) < parseFloat(b.volume)) {
                     return 1;
                 }
                 else {
@@ -627,7 +626,6 @@ document.addEventListener("DOMContentLoaded", function() {
             tblArray.push([mMA[0], mMA[1], mMA[2]]);
         }
         tblArray = tableFlip(tblArray);
-        console.log(tblArray);
         const tbl = document.createElement("table");
         const headerRow = document.createElement("tr");
         const openHeader = document.createElement("th");
@@ -648,11 +646,11 @@ document.addEventListener("DOMContentLoaded", function() {
         tbl.appendChild(headerRow);
         for (row of tblArray) {
             const rw = document.createElement("tr");
-            const open = document.createElement("th"); 
-            const close = document.createElement("th");
-            const low = document.createElement("th");
-            const high = document.createElement("th");
-            const vol = document.createElement("th");
+            const open = document.createElement("td"); 
+            const close = document.createElement("td");
+            const low = document.createElement("td");
+            const high = document.createElement("td");
+            const vol = document.createElement("td");
             open.textContent = currencyFormat(row[0]);
             close.textContent = currencyFormat(row[1]);
             low.textContent = currencyFormat(row[2]);
