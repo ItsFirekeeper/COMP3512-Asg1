@@ -245,6 +245,12 @@ credit to Epicmax and Vasili Savitski
   text-align: left;
 }
 
+#company-description{
+    font-size: 15px;
+    margin: 20px;
+    background-color: white;
+}
+  
 #stockFormDiv table th, #stockFormDiv table td, #stockFormSecondary table th, #stockFormSecondary table td {
   padding: 0px 10px 0px 10px;
 }
