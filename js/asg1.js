@@ -10,7 +10,8 @@ document.addEventListener("DOMContentLoaded", function() {
     const companyInfoHeader = document.querySelector("#company-info section h2");
     const stockDiv = document.querySelector("#stockFormDiv");
     const stockDivSecondary = document.querySelector("#stockFormSecondary");
- 
+    
+    
     let creditLoop = true;
     let compList = [];
     let stockData = [];
@@ -108,9 +109,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Move the map marker to the specified company location
     function moveMapMarker(companyListEvent, currentMap){
-        for (c of compList) {
-            if (companyListEvent.target.textContent == c.name) {
-                markerLatLong = {lat: c.latitude, lng: c.longitude };
+    
+            if (companyListEvent.target.textContent == selectedCompany.name) {
+                markerLatLong = {lat: selectedCompany.latitude, lng: selectedCompany.longitude };
                 if(marker != null){
                     marker.setMap(null);
                     marker = null;
@@ -118,18 +119,16 @@ document.addEventListener("DOMContentLoaded", function() {
                 worldMap.setZoom(12);
                 marker = new google.maps.Marker({
                     position: markerLatLong,
-                    title: c.address,
+                    title: selectedCompany.address,
                     map: currentMap
                 });
                 worldMap.panTo(marker.position);
-                break;
             }
-        }
     }
-
+    
     // Load map for the first time
     function initMap() {
-        worldMap = new google.maps.Map(document.getElementById('map'), {
+        worldMap = new google.maps.Map(document.querySelector('#mapMain'), {
             center : {lat: 30.0599153, lng: 31.262019913},
             zoom: 1
         });
@@ -464,7 +463,8 @@ document.addEventListener("DOMContentLoaded", function() {
         });   
     }
 
-    // inspired by https://code.tutsplus.com/tutorials/getting-started-with-chartjs-line-and-bar-charts--cms-28384    
+    // inspired by https://code.tutsplus.com/tutorials/getting-started-with-chartjs-line-and-bar-charts--cms-28384 
+    //used https://stackoverflow.com/questions/51196855/chart-js-moment-js-could-not-be-found-you-must-include-it-before-chart-js-to for script help
     function createLineChart(stockData){
        document.querySelector('#line-div').innerHTML = "";
         
@@ -472,31 +472,59 @@ document.addEventListener("DOMContentLoaded", function() {
         bar.setAttribute("id", "line-graph-img");
         
         document.querySelector('#line-div').appendChild(bar);
-        
+        console.log(stockData);
         const lineGraphSection = document.querySelector('#line-graph-img').getContext("2d");
         let dataClose = {
             label: "Close",
             data: [],
-            lineTension: 0.3,
+            lineTension: 0,
+            fill: false,
+            borderColor: 'blue'
             // Set More Options
         };
         let dataVolume = {
-            label: "Volume",
+            label: "Volume per 100 000",
             data: [],
+            lineTension: 0,
+            fill: false,
+            borderColor: 'red'
             // Set More Options
         };
-        let closeVolumeData = {
+                let closeVolumeData = {
             labels: [],
             datasets: [dataClose, dataVolume]
         };
         for(let entry of stockData){
             dataClose.data.push(entry.close);
-            dataVolume.data.push(entry.volume);
+            dataVolume.data.push(entry.volume/100000);
             closeVolumeData.labels.push(entry.date);
         }
         let lineChart = new Chart(lineGraphSection, {
             type: 'line',
-            data: closeVolumeData
+            data: closeVolumeData,
+            options: {
+                scales: {
+                    xAxes: [{
+                        type: 'time',
+                        time: {
+                            unit: 'month',
+                            displayFormats: {
+                        quarter: 'MMM YYYY'
+                    }
+                        },
+
+                        ticks: {
+                            
+                            maxTicksLimit: 10,
+                            source: "auto"
+                        },
+
+                    }],
+                    yAxes: [{
+        
+                    }]
+                }
+                                  }
         });
     }
     

@@ -23,6 +23,13 @@ body {
     box-shadow: 8px 8px 20px #1a8fc5;
 }
 
+.mapSection {
+    background-color: #94b5c0;
+    border-radius: 5px;
+    padding: 180px;
+    box-shadow: 8px 8px 20px #1a8fc5;
+}
+
 #header {
     grid-column: 1 / span 3;
     grid-row: 1 / span 1;
