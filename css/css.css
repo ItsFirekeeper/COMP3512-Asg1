@@ -97,27 +97,26 @@ body {
 }
 
 #stockFormDiv {
+  display: inline-block;
   list-style-type: none;
   overflow-y: scroll;
-  overflow-x: scroll;
   background-color: white;
   border: 1px solid black;
   height: 300px;
   margin: 0px;
-  padding-left: 5%;
+  padding-left: 3%;
   padding-top: 3%;
   padding-bottom: 3%;
 }
 
 #stockFormSecondary {
+  display: inline-block;
   list-style-type: none;
-  overflow-y: scroll;
-  overflow-x: scroll;
   background-color: white;
   border: 1px solid black;
   height: 100px;
   margin: 0px;
-  padding-left: 5%;
+  padding-left: 3%;
   padding-top: 3%;
   padding-bottom: 3%;
 }
@@ -225,7 +224,7 @@ credit to Epicmax and Vasili Savitski
 
 #logoPhoto {
   max-height: 100px;
-  max-width: 100px;
+  max-width: 300px;
   height: auto;
   width: auto;
 }
@@ -242,6 +241,19 @@ credit to Epicmax and Vasili Savitski
   cursor: pointer;
 }
 
-table {
+#stockFormDiv table td, #stockFormSecondary table td {
   text-align: left;
+}
+
+#stockFormDiv table th, #stockFormDiv table td, #stockFormSecondary table th, #stockFormSecondary table td {
+  padding: 0px 10px 0px 10px;
+}
+
+#stockFormDiv table, #stockFormSecondary table {
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+#stockFormDiv table th, #stockFormSecondary table th {
+  padding-bottom: 5px;
 }
