@@ -16,7 +16,8 @@ document.addEventListener("DOMContentLoaded", function() {
     let markerLatLong = {lat: null, lng: null };
     let marker = null;
     let worldMap = null;
-    
+    let selectedCompany = null;
+    let candleStickData = [];
     initDisplayElementHide()
 
     initMap();
@@ -86,7 +87,11 @@ document.addEventListener("DOMContentLoaded", function() {
     document.querySelectorAll('.toggleChartButton').forEach(btn => {
         console.log("yes");
         btn.addEventListener('click', (e) => {
-            toggleChartView();
+            toggleChartView(selectedCompany);
+            createBarChart(selectedCompany);
+            createCandleChart(stockData);
+            createLineChart(stockData);
+            popFinancials(selectedCompany);
         });
     });
     
@@ -192,10 +197,10 @@ document.addEventListener("DOMContentLoaded", function() {
     // Populates the company information area
     function popCompanyInfo(companyListItem) {
         companyDetails.innerHTML = "";
-        for (c of compList) {
-            if (companyListItem.target.textContent == c.name) {
-                if (c.symbol != "") {
-                    let imgString = "../logos/" + c.symbol + ".svg";
+   selectedCompany = compList.find(company => company.name == companyListItem.target.textContent);
+            if (selectedCompany != null) {
+                if (selectedCompany.symbol != "") {
+                    let imgString = "../logos/" + selectedCompany.symbol + ".svg";
                     console.log(imgString);
                     const logo = document.createElement("img");
                     const symbol = document.createElement("p");
@@ -208,14 +213,14 @@ document.addEventListener("DOMContentLoaded", function() {
                     const description = document.createElement("p");
                     logo.src = imgString;
                     logo.setAttribute("id", "logoPhoto");
-                    symbol.textContent = `Symbol: ${c.symbol}`;
-                    name.textContent = `Name: ${c.name}`;
-                    sector.textContent = `Sector: ${c.sector}`;
-                    subindustry.textContent = `SubIndustry: ${c.subindustry}`;
-                    address.textContent = `Address: ${c.address}`;
-                    website.textContent = `Website: ${c.website}`;
-                    exchange.textContent = `Exchange: ${c.exchange}`;
-                    description.textContent = `Description: ${c.description}`;
+                    symbol.textContent = `Symbol: ${selectedCompany.symbol}`;
+                    name.textContent = `Name: ${selectedCompany.name}`;
+                    sector.textContent = `Sector: ${selectedCompany.sector}`;
+                    subindustry.textContent = `SubIndustry: ${selectedCompany.subindustry}`;
+                    address.textContent = `Address: ${selectedCompany.address}`;
+                    website.textContent = `Website: ${selectedCompany.website}`;
+                    exchange.textContent = `Exchange: ${selectedCompany.exchange}`;
+                    description.textContent = `Description: ${selectedCompany.description}`;
                     companyDetails.appendChild(logo);
                     companyDetails.appendChild(symbol);
                     companyDetails.appendChild(name);
@@ -233,7 +238,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             }
         }
-    }
 
     // Filters the list of companies given input text
     function filterCompaniesList(inputText) {
@@ -259,6 +263,37 @@ document.addEventListener("DOMContentLoaded", function() {
         // credit to Epicmax and Vasili Savitski
     }
 
+    function popFinancials(selectedCompany){
+        
+        const financialTable = document.querySelector('#financial-table-body');
+        
+        for(let i = 0; i < selectedCompany.financials.years.length; i++){
+            
+            const trFinancial = document.createElement("tr");
+            
+             const tdYear = document.createElement("td");
+             const tdRevenue = document.createElement("td");
+            const tdEarnings = document.createElement("td");
+            const tdAssets = document.createElement("td");
+            const tdLiabilities = document.createElement("td");
+            tdYear.textContent = selectedCompany.financials.years[i]
+            tdRevenue.textContent = selectedCompany.financials.revenue[i].toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+            tdEarnings.textContent = selectedCompany.financials.earnings[i].toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+            tdAssets.textContent = selectedCompany.financials.assets[i].toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+            tdLiabilities.textContent = selectedCompany.financials.liabilities[i].toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+            
+            trFinancial.appendChild(tdYear);
+            trFinancial.appendChild(tdRevenue);
+            trFinancial.appendChild(tdEarnings);
+            trFinancial.appendChild(tdAssets);
+            trFinancial.appendChild(tdLiabilities);
+            financialTable.appendChild(trFinancial);
+            
+        }
+        
+        }
+        
+    
     // Highlights a list item that it is passed through css
     function highlightListItem(companyListItem){
       let activeList = document.querySelectorAll('.active');
@@ -345,24 +380,154 @@ document.addEventListener("DOMContentLoaded", function() {
         return trHeader;
     }
 
-    function toggleChartView() {
-        const main = document.querySelector("#mainView");
-        const chart = document.querySelector("#chartView");
-        if (main.classList.contains("showSection") && chart.classList.contains("hideSection")) {
-            console.log("fruck");
-            console.log(main.classList);
-            main.classList.remove("showSection");
-            main.classList.add("hideSection");
-            chart.classList.remove("hideSection");
-            chart.classList.add("showSection");
+    function toggleChartView(selectedCompany) {
+        
+        const error = document.querySelector("#potential-error"); 
+        error.textContent = "";
+        if (selectedCompany == null){
+
+            error.innerHTML = "Please select a company before switching to chart view";
+            
+            
         }
         else {
-            console.log("frick");
-            console.log(main.classList);
-            main.classList.remove("hideSection");
-            main.classList.add("showSection");
-            chart.classList.remove("showSection");
-            chart.classList.add("hideSection");
+            const main = document.querySelector("#mainView");
+            const chart = document.querySelector("#chartView");
+                if (main.classList.contains("showSection") &&   chart.classList.contains("hideSection")) {
+                    console.log("fruck");
+                    console.log(main.classList);
+                    main.classList.remove("showSection");
+                    main.classList.add("hideSection");
+                    chart.classList.remove("hideSection");
+                    chart.classList.add("showSection");
+                }
+                else {
+                    console.log("frick");
+                    console.log(main.classList);
+                    main.classList.remove("hideSection");
+                    main.classList.add("showSection");
+                    chart.classList.remove("showSection");
+                    chart.classList.add("hideSection");
+                }
         }
     }
+ // inspired by https://stackoverflow.com/questions/28180871/grouped-bar-charts-in-chart-js   
+    function createBarChart(company){
+        const barGraphSection = document.querySelector('#bar-graph-img').getContext("2d");
+//        graph.setAttribute("width", "400");
+//        graph.setAttribute("height", "400");
+            
+            let data = {
+                labels: [2017,2018,2019],
+                datasets: [
+                {   
+                    label: "Blue",
+                    backgroundColor: "blue",
+                    data: company.financials.revenue
+                },
+                {
+                    label: "Red",
+                    backgroundColor: "red",
+                    data: company.financials.earnings
+                },
+                {
+                    label: "Green",
+                    backgroundColor: "green",
+                    data: company.financials.assets
+                },
+                {
+                    label: "Yellow",
+                    backgroundColor: "Yellow",
+                    data: company.financials.liabilites
+                }
+            ]
+        };
+        
+            let chartOptions = {
+            responsive: true,
+            legend: {
+            position: "top"
+            },
+            title: {
+            display: true,
+            text: "Chart.js Bar Chart"
+            },
+            scales: {
+            yAxes: [{
+            ticks: {
+            beginAtZero: true
+            }
+            }]
+            }
+        }
+
+        
+    let BarChart = new Chart(barGraphSection, {
+        type: "bar",
+        data: data,
+        options: chartOptions
+    });   
+        }
+// inspired by https://code.tutsplus.com/tutorials/getting-started-with-chartjs-line-and-bar-charts--cms-28384    
+    function createLineChart(stockData){
+        
+         const lineGraphSection = document.querySelector('#line-graph-img').getContext("2d");
+        
+        let dataFirst = {
+            label: "Close",
+            data: [],
+            lineTension: 0.3,
+            // Set More Options
+            };
+     
+        let dataSecond = {
+        label: "Volume",
+        data: [],
+        // Set More Options
+        };
+        
+        let closeVolumeData = {
+        labels: [],
+        datasets: [dataFirst, dataSecond]
+        };
+        
+        for(let entry of stockData){
+            
+            dataFirst.data.push(entry.close);
+            dataSecond.data.push(entry.volume);
+            closeVolumeData.labels.push(entry.date);
+            
+        }
+      
+        
+        let lineChart = new Chart(lineGraphSection, {
+        type: 'line',
+        data: closeVolumeData
+        });
+        
+        
+    }
+    
+        function createCandleChart(stockData){
+        
+         const candleGraphSection = document.querySelector('#candle-graph-img');
+            let candlestickChart = echarts.init(candleGraphSection);
+
+            let option = {
+            xAxis: {
+                data: ['Min', 'Max', 'Averag']
+                },
+            yAxis: {},
+            series: [{
+            type: 'k',
+            data: [
+           [stockData[0].open, stockData[0].high, stockData[0].low, stockData[0].close],
+            [stockData[60].open, stockData[60].high, stockData[60].low, stockData[60].close],
+        ]
+    }]
+};   
+            candlestickChart.setOption(option);               
+            
+    }
+    
 });

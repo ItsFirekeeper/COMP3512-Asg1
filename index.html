@@ -7,6 +7,8 @@
         <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDfjr18be2TRw0GoaK6nzcpbs_MQSUzyGc& callback=initMap"></script> 
         <link rel="stylesheet" href="css/css.css">
         <script src="https://use.fontawesome.com/d7942d2fd3.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/4.0.4/echarts.min.js"></script>
     </head>
     <body>
         <main class="container">
@@ -42,21 +44,36 @@
                         <div id="map"></div>
                     </section>
                 </div>
-                <div class="section" id="stock-data">
+                <div class="section" id="stock-data"><h2>Stocks</h2>
                     <section>
                         <button class="toggleChartButton">View Charts</button>
                         <div id="stockFormDiv"></div>
                     </section>
                 </div>
                 <div class="section" id="stock-data-secondary">
+                    <h2>Charts</h2>
+                    <br>
+                    <br>
+                    <br>
+                    <br>
+                    <h1 id="potential-error"></h1>
                     <section>
-                        
                     </section>
                 </div>
             </div>
             <div id="chartView" class="hideSection">
                 <div class="section" id="charts">
                     <h2>Charts</h2>
+                    <section id="graphs">
+                    <div>
+                    <canvas id="bar-graph-img"></canvas>
+                    </div>
+                    <div id="candle-graph-img">
+                    </div>
+                    <div>
+                    <canvas id="line-graph-img"></canvas>
+                    </div>
+                    </section>
                 </div>
                 <div class="section" id="compNameSym">
                     <h2>Company Name + Symbol</h2>
@@ -64,6 +81,20 @@
                 </div>
                 <div class="section" id="financials">
                     <h2>Financials</h2>
+                    <table id="financial-table">
+                        <thead>
+                            <tr>
+                            <th>Year</th>
+                            <th>Revenue</th>
+                            <th>Earnings</th>
+                            <th>Assets</th> 
+                            <th>Liabilities</th> 
+                            </tr>
+                        </thead>
+                        <tbody id="financial-table-body">
+                        
+                        </tbody>
+                    </table>
                     
                 </div>
             </div>
