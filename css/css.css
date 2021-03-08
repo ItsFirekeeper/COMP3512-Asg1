@@ -96,7 +96,7 @@ body {
     padding-bottom: 3%;
 }
 
-#stockFormDiv, #stockFormSecondary {
+#stockFormDiv {
   list-style-type: none;
   overflow-y: scroll;
   overflow-x: scroll;
@@ -107,7 +107,19 @@ body {
   padding-left: 5%;
   padding-top: 3%;
   padding-bottom: 3%;
-    
+}
+
+#stockFormSecondary {
+  list-style-type: none;
+  overflow-y: scroll;
+  overflow-x: scroll;
+  background-color: white;
+  border: 1px solid black;
+  height: 100px;
+  margin: 0px;
+  padding-left: 5%;
+  padding-top: 3%;
+  padding-bottom: 3%;
 }
 
 #financial-table {
@@ -230,8 +242,13 @@ credit to Epicmax and Vasili Savitski
   cursor: pointer;
 }
 
+<<<<<<< HEAD
 #company-description{
     font-size: 15px;
     margin: 20px;
     background-color: white;
+=======
+table {
+  text-align: left;
+>>>>>>> dev
 }
