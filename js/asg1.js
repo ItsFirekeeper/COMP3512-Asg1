@@ -489,13 +489,13 @@ document.addEventListener("DOMContentLoaded", function() {
         
         let closeVolumeData = {
         labels: [],
-        datasets: [dataCLose, dataVolume]
+        datasets: [dataClose, dataVolume]
         };
         
         for(let entry of stockData){
             
-            dataFirst.data.push(entry.close);
-            dataSecond.data.push(entry.volume);
+            dataClose.data.push(entry.close);
+            dataVolume.data.push(entry.volume);
             closeVolumeData.labels.push(entry.date);
             
         }
