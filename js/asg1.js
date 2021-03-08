@@ -324,6 +324,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function popStockData(sD) {
+                console.log("here");
         stockDiv.innerHTML = "";
         const tbl = document.createElement("table");
         stockHd = stockHeader();
@@ -337,11 +338,11 @@ document.addEventListener("DOMContentLoaded", function() {
             const highVal = document.createElement("td");
             const volVal = document.createElement("td");
             dateVal.innerHTML = stockListing.date;
-            openVal.innerHTML = stockListing.open;
-            closeVal .innerHTML = stockListing.close;
-            lowVal.innerHTML = stockListing.low;
-            highVal.innerHTML = stockListing.high;
-            volVal.innerHTML = stockListing.volume;
+            openVal.innerHTML = currencyFormat(stockListing.open);
+            closeVal .innerHTML = currencyFormat(stockListing.close);
+            lowVal.innerHTML = currencyFormat(stockListing.low);
+            highVal.innerHTML = currencyFormat(stockListing.high);
+            volVal.innerHTML = parseInt(stockListing.volume);
             trStockRow.appendChild(dateVal);
             trStockRow.appendChild(openVal);
             trStockRow.appendChild(closeVal);
@@ -501,10 +502,10 @@ document.addEventListener("DOMContentLoaded", function() {
     function sortStocks(sortType) {
         if (sortType == "Date") {
             const dateSort = stockData.sort( function(a,b) {
-                if (a.date < b.date) {
+                if (a.date > b.date) {
                     return -1;
                 }
-                else if (a.date > b.date) {
+                else if (a.date < b.date) {
                     return 1;
                 }
                 else {
@@ -515,10 +516,10 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         else if (sortType == "Open") {
             const openSort = stockData.sort( function(a,b) {
-                if (a.open < b.open) {
+                if (a.open > b.open) {
                     return -1;
                 }
-                else if (a.open > b.open) {
+                else if (a.open < b.open) {
                     return 1;
                 }
                 else {
@@ -529,10 +530,10 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         else if (sortType == "Close") {
             const closeSort = stockData.sort( function(a,b) {
-                if (a.close < b.close) {
+                if (a.close > b.close) {
                     return -1;
                 }
-                else if (a.close > b.close) {
+                else if (a.close < b.close) {
                     return 1;
                 }
                 else {
@@ -543,10 +544,10 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         else if (sortType == "Low") {
             const lowSort = stockData.sort( function(a,b) {
-                if (a.low < b.low) {
+                if (a.low > b.low) {
                     return -1;
                 }
-                else if (a.low > b.low) {
+                else if (a.low < b.low) {
                     return 1;
                 }
                 else {
@@ -557,10 +558,10 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         else if (sortType == "High") {
             const highSort = stockData.sort( function(a,b) {
-                if (a.high < b.high) {
+                if (a.high > b.high) {
                     return -1;
                 }
-                else if (a.high > b.high) {
+                else if (a.high < b.high) {
                     return 1;
                 }
                 else {
@@ -571,10 +572,10 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         else if (sortType == "Volume") {
             const volSort = stockData.sort( function(a,b) {
-                if (a.volume < b.volume) {
+                if (a.volume > b.volume) {
                     return -1;
                 }
-                else if (a.volume > b.volume) {
+                else if (a.volume < b.volume) {
                     return 1;
                 }
                 else {
@@ -630,11 +631,11 @@ document.addEventListener("DOMContentLoaded", function() {
             const low = document.createElement("th");
             const high = document.createElement("th");
             const vol = document.createElement("th");
-            open.textContent = row[0];
-            close.textContent = row[1];
-            low.textContent = row[2];
-            high.textContent = row[3];
-            vol.textContent = row[4];
+            open.textContent = currencyFormat(row[0]);
+            close.textContent = currencyFormat(row[1]);
+            low.textContent = currencyFormat(row[2]);
+            high.textContent = currencyFormat(row[3]);
+            vol.textContent = Math.round(row[4]);
             rw.appendChild(open);
             rw.appendChild(close);
             rw.appendChild(low);
@@ -674,5 +675,10 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         }
         return retArray;
+    }
+
+    //from lab08-test06
+    function currencyFormat(num) {
+        return new Intl.NumberFormat('en-us', {style: 'currency', currency: 'USD'}).format(num);
     }
 });
