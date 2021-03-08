@@ -414,73 +414,71 @@ document.addEventListener("DOMContentLoaded", function() {
  // inspired by https://stackoverflow.com/questions/28180871/grouped-bar-charts-in-chart-js   
     function createBarChart(company){
         const barGraphSection = document.querySelector('#bar-graph-img').getContext("2d");
-//        graph.setAttribute("width", "400");
-//        graph.setAttribute("height", "400");
             
-            let data = {
+            let barData = {
                 labels: [2017,2018,2019],
                 datasets: [
                 {   
-                    label: "Blue",
+                    label: "Revenue",
                     backgroundColor: "blue",
                     data: company.financials.revenue
                 },
                 {
-                    label: "Red",
+                    label: "Earnings",
                     backgroundColor: "red",
                     data: company.financials.earnings
                 },
                 {
-                    label: "Green",
+                    label: "Assets",
                     backgroundColor: "green",
                     data: company.financials.assets
                 },
                 {
-                    label: "Yellow",
+                    label: "Liabilities",
                     backgroundColor: "Yellow",
                     data: company.financials.liabilites
                 }
             ]
         };
         
-            let chartOptions = {
-            responsive: true,
-            legend: {
-            position: "top"
-            },
-            title: {
-            display: true,
-            text: "Chart.js Bar Chart"
-            },
-            scales: {
-            yAxes: [{
-            ticks: {
-            beginAtZero: true
-            }
-            }]
+            let barChartOptions = {
+                responsive: true,
+                legend: {
+                    position: "top"
+                },
+                title: {
+                    display: true,
+                    text: "Revenue, Earnings, Assets, and Liabilities"
+                },
+                scales: {
+                yAxes: [{
+                ticks: {
+                beginAtZero: true
+                }
+                }]
             }
         }
 
         
-    let BarChart = new Chart(barGraphSection, {
-        type: "bar",
-        data: data,
-        options: chartOptions
-    });   
-        }
+        let BarChart = new Chart(barGraphSection, {
+            type: "bar",
+            data: barData,
+            options: barChartOptions
+        });   
+    }
 // inspired by https://code.tutsplus.com/tutorials/getting-started-with-chartjs-line-and-bar-charts--cms-28384    
     function createLineChart(stockData){
         
          const lineGraphSection = document.querySelector('#line-graph-img').getContext("2d");
         
-        let dataFirst = {
+        let dataClose = {
             label: "Close",
             data: [],
             lineTension: 0.3,
             // Set More Options
             };
      
-        let dataSecond = {
+        let dataVolume = {
         label: "Volume",
         data: [],
         // Set More Options
@@ -488,7 +486,7 @@ document.addEventListener("DOMContentLoaded", function() {
         
         let closeVolumeData = {
         labels: [],
-        datasets: [dataFirst, dataSecond]
+        datasets: [dataCLose, dataVolume]
         };
         
         for(let entry of stockData){
