@@ -265,15 +265,11 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function popFinancials(selectedCompany){
-        
         const financialTable = document.querySelector('#financial-table-body');
-        
-        for(let i = 0; i < selectedCompany.financials.years.length; i++){
-            
+        for( let i = 0; i < selectedCompany.financials.years.length; i++){
             const trFinancial = document.createElement("tr");
-            
-             const tdYear = document.createElement("td");
-             const tdRevenue = document.createElement("td");
+            const tdYear = document.createElement("td");
+            const tdRevenue = document.createElement("td");
             const tdEarnings = document.createElement("td");
             const tdAssets = document.createElement("td");
             const tdLiabilities = document.createElement("td");
@@ -282,17 +278,14 @@ document.addEventListener("DOMContentLoaded", function() {
             tdEarnings.textContent = selectedCompany.financials.earnings[i].toLocaleString('en-US', { style: 'currency', currency: 'USD' });
             tdAssets.textContent = selectedCompany.financials.assets[i].toLocaleString('en-US', { style: 'currency', currency: 'USD' });
             tdLiabilities.textContent = selectedCompany.financials.liabilities[i].toLocaleString('en-US', { style: 'currency', currency: 'USD' });
-            
             trFinancial.appendChild(tdYear);
             trFinancial.appendChild(tdRevenue);
             trFinancial.appendChild(tdEarnings);
             trFinancial.appendChild(tdAssets);
             trFinancial.appendChild(tdLiabilities);
             financialTable.appendChild(trFinancial);
-            
         }
-        
-        }
+    }
         
     
     // Highlights a list item that it is passed through css
@@ -384,29 +377,19 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function toggleChartView(selectedCompany) {
-        
-        const error = document.querySelector("#potential-error"); 
-        error.textContent = "";
         if (selectedCompany == null){
-
-            error.innerHTML = "Please select a company before switching to chart view";
-            
-            
+            alert("Please select a company before switching to chart view");
         }
         else {
             const main = document.querySelector("#mainView");
             const chart = document.querySelector("#chartView");
                 if (main.classList.contains("showSection") &&   chart.classList.contains("hideSection")) {
-                    console.log("fruck");
-                    console.log(main.classList);
                     main.classList.remove("showSection");
                     main.classList.add("hideSection");
                     chart.classList.remove("hideSection");
                     chart.classList.add("showSection");
                 }
                 else {
-                    console.log("frick");
-                    console.log(main.classList);
                     main.classList.remove("hideSection");
                     main.classList.add("showSection");
                     chart.classList.remove("showSection");
@@ -414,13 +397,13 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
         }
     }
- // inspired by https://stackoverflow.com/questions/28180871/grouped-bar-charts-in-chart-js   
+
+    // inspired by https://stackoverflow.com/questions/28180871/grouped-bar-charts-in-chart-js   
     function createBarChart(company){
         const barGraphSection = document.querySelector('#bar-graph-img').getContext("2d");
-            
-            let barData = {
-                labels: [2017,2018,2019],
-                datasets: [
+        let barData = {
+            labels: [2017,2018,2019],
+            datasets: [
                 {   
                     label: "Revenue",
                     backgroundColor: "blue",
@@ -443,95 +426,78 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             ]
         };
-        
-            let barChartOptions = {
-                responsive: true,
-                legend: {
-                    position: "top"
-                },
-                title: {
-                    display: true,
-                    text: "Revenue, Earnings, Assets, and Liabilities"
-                },
-                scales: {
+        let barChartOptions = {
+            responsive: true,
+            legend: {
+                position: "top"
+            },
+            title: {
+                display: true,
+                text: "Revenue, Earnings, Assets, and Liabilities"
+            },
+            scales: {
                 yAxes: [{
-                ticks: {
-                beginAtZero: true
-                }
+                    ticks: {
+                        beginAtZero: true
+                    }
                 }]
             }
         }
-
-        
         let BarChart = new Chart(barGraphSection, {
             type: "bar",
             data: barData,
             options: barChartOptions
         });   
     }
-// inspired by https://code.tutsplus.com/tutorials/getting-started-with-chartjs-line-and-bar-charts--cms-28384    
+
+    // inspired by https://code.tutsplus.com/tutorials/getting-started-with-chartjs-line-and-bar-charts--cms-28384    
     function createLineChart(stockData){
-        
-         const lineGraphSection = document.querySelector('#line-graph-img').getContext("2d");
-        
+        const lineGraphSection = document.querySelector('#line-graph-img').getContext("2d");
         let dataClose = {
             label: "Close",
             data: [],
             lineTension: 0.3,
             // Set More Options
-            };
-     
+        };
         let dataVolume = {
-        label: "Volume",
-        data: [],
-        // Set More Options
+            label: "Volume",
+            data: [],
+            // Set More Options
         };
-        
         let closeVolumeData = {
-        labels: [],
-        datasets: [dataClose, dataVolume]
+            labels: [],
+            datasets: [dataClose, dataVolume]
         };
-        
         for(let entry of stockData){
-            
             dataClose.data.push(entry.close);
             dataVolume.data.push(entry.volume);
             closeVolumeData.labels.push(entry.date);
-            
         }
-      
-        
         let lineChart = new Chart(lineGraphSection, {
-        type: 'line',
-        data: closeVolumeData
+            type: 'line',
+            data: closeVolumeData
         });
-        
-        
     }
     
-        function createCandleChart(stockData){
-        
-         const candleGraphSection = document.querySelector('#candle-graph-img');
-            let candlestickChart = echarts.init(candleGraphSection);
-
-            let option = {
+    function createCandleChart(stockData){
+        const candleGraphSection = document.querySelector('#candle-graph-img');
+        let candlestickChart = echarts.init(candleGraphSection);
+        let option = {
             xAxis: {
                 data: ['Min', 'Max', 'Averag']
-                },
+            },
             yAxis: {},
             series: [{
-            type: 'k',
-            data: [
-           [stockData[0].open, stockData[0].high, stockData[0].low, stockData[0].close],
-            [stockData[60].open, stockData[60].high, stockData[60].low, stockData[60].close],
-        ]
-    }]
-};   
-            candlestickChart.setOption(option);               
-            
+                type: 'k',
+                data: [
+                    [stockData[0].open, stockData[0].high, stockData[0].low, stockData[0].close],
+                    [stockData[60].open, stockData[60].high, stockData[60].low, stockData[60].close],
+                ]
+            }]
+        };   
+        candlestickChart.setOption(option);
     }
     
-
     function sortStocks(sortType) {
         if (sortType == "Date") {
             const dateSort = stockData.sort( function(a,b) {
