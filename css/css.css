@@ -229,3 +229,9 @@ credit to Epicmax and Vasili Savitski
 #companyList #countryItem, #stockFormDiv table tr th {
   cursor: pointer;
 }
+
+#company-description{
+    font-size: 15px;
+    margin: 20px;
+    background-color: white;
+}

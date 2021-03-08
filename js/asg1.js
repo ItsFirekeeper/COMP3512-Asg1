@@ -92,6 +92,8 @@ document.addEventListener("DOMContentLoaded", function() {
             createCandleChart(stockData);
             createLineChart(stockData);
             popFinancials(selectedCompany);
+            changeCompanyAndSymbolHeader(selectedCompany);
+            companyDescription(selectedCompany);
         });
     });
     
@@ -709,4 +711,18 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         return retArray;
     }
+    
+    function changeCompanyAndSymbolHeader(selectedCompany){
+        const headerCompanySymbol = document.querySelector("#CompanyName-Symbol");
+        
+        headerCompanySymbol.textContent = "";
+        headerCompanySymbol.textContent = selectedCompany.name + " " + selectedCompany.symbol;                        
+    }
+    
+    function companyDescription(selectedCompany){
+        const companyDescription = document.querySelector('#company-description');
+        companyDescription.textContent = selectedCompany.description;
+        
+    }
+    
 });
