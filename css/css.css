@@ -267,6 +267,7 @@ credit to Epicmax and Vasili Savitski
     font-size: 15px;
     margin: 20px;
     background-color: white;
+    padding: 20px;
 }
   
 #stockFormDiv table th, #stockFormDiv table td, #stockFormSecondary table th, #stockFormSecondary table td {
