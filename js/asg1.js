@@ -88,10 +88,13 @@ document.addEventListener("DOMContentLoaded", function() {
     document.querySelectorAll('.toggleChartButton').forEach(btn => {
         btn.addEventListener('click', (e) => {
             toggleChartView(selectedCompany);
+            popFinancials(selectedCompany);
+            
+            if(selectedCompany != null && document.querySelector("#chartView").classList.contains("showSection")){
             createBarChart(selectedCompany);
             createCandleChart(stockData);
             createLineChart(stockData);
-            popFinancials(selectedCompany);
+            }
             changeCompanyAndSymbolHeader(selectedCompany);
             companyDescription(selectedCompany);
         });
@@ -403,7 +406,16 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // inspired by https://stackoverflow.com/questions/28180871/grouped-bar-charts-in-chart-js   
     function createBarChart(company){
+
+        document.querySelector('#bar-div').innerHTML = "";
+        
+        const bar = document.createElement('canvas');
+        bar.setAttribute("id", "bar-graph-img");
+        
+        document.querySelector('#bar-div').appendChild(bar);
+        
         const barGraphSection = document.querySelector('#bar-graph-img').getContext("2d");
+        
         let barData = {
             labels: [2017,2018,2019],
             datasets: [
@@ -455,6 +467,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // inspired by https://code.tutsplus.com/tutorials/getting-started-with-chartjs-line-and-bar-charts--cms-28384    
     function createLineChart(stockData){
+       document.querySelector('#line-div').innerHTML = "";
+        
+        const bar = document.createElement('canvas');
+        bar.setAttribute("id", "line-graph-img");
+        
+        document.querySelector('#line-div').appendChild(bar);
+        
         const lineGraphSection = document.querySelector('#line-graph-img').getContext("2d");
         let dataClose = {
             label: "Close",
@@ -499,7 +518,8 @@ document.addEventListener("DOMContentLoaded", function() {
             }]
         };   
         candlestickChart.setOption(option);
-    }
+    }        
+        
     
     function sortStocks(sortType) {
         if (sortType == "Date") {
