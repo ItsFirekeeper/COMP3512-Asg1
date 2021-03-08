@@ -1,3 +1,5 @@
+// used Charts.js API which can be found at: https://www.chartjs.org/docs/
+
 document.addEventListener("DOMContentLoaded", function() {
     const countryString = "http://www.randyconnolly.com/funwebdev/3rd/api/stocks/companies.php";
     const stocksURL = "http://www.randyconnolly.com/funwebdev/3rd/api/stocks/history.php?symbol=";
@@ -441,6 +443,7 @@ document.addEventListener("DOMContentLoaded", function() {
         };
         let barChartOptions = {
             responsive: true,
+    maintainAspectRatio: false,
             legend: {
                 position: "top"
             },
@@ -451,7 +454,11 @@ document.addEventListener("DOMContentLoaded", function() {
             scales: {
                 yAxes: [{
                     ticks: {
-                        beginAtZero: true
+                        beginAtZero: true,
+                        // Include a dollar sign in the ticks
+                    callback: function(value, index, values) {
+                        return '$' + value;
+                    }
                     }
                 }]
             }
@@ -503,6 +510,8 @@ document.addEventListener("DOMContentLoaded", function() {
             type: 'line',
             data: closeVolumeData,
             options: {
+                 responsive: true,
+                maintainAspectRatio: false,
                 scales: {
                     xAxes: [{
                         type: 'time',
@@ -521,8 +530,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
                     }],
                     yAxes: [{
+                        ticks: {
+                    // Include a dollar sign in the ticks
+                    callback: function(value, index, values) {
+                        return '$' + value;
+                    }
         
-                    }]
+                    }}]
                 }
                                   }
         });
