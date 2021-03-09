@@ -525,7 +525,6 @@ document.addEventListener("DOMContentLoaded", function() {
         bar.setAttribute("id", "line-graph-img");
         
         document.querySelector('#line-div').appendChild(bar);
-        console.log(stockData);
         const lineGraphSection = document.querySelector('#line-graph-img').getContext("2d");
         let dataClose = {
             label: "Close",
