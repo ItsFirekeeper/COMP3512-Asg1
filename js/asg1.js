@@ -719,6 +719,13 @@ document.addEventListener("DOMContentLoaded", function() {
             rw.appendChild(vol);
             tbl.appendChild(rw);
         }
+        tbl.rows[0].insertCell(0);
+        let minRow = tbl.rows[1].insertCell(0);
+        minRow.innerHTML = "min";
+        let maxRow = tbl.rows[2].insertCell(0);
+        maxRow.innerHTML = "max";
+        let avgRow = tbl.rows[3].insertCell(0);
+        avgRow.innerHTML = "avg";
         stockDivSecondary.appendChild(tbl);
     }
 
@@ -756,7 +763,7 @@ document.addEventListener("DOMContentLoaded", function() {
         return retArray;
     }
 
-    
+
     function changeCompanyAndSymbolHeader(selectedCompany){
         const headerCompanySymbol = document.querySelector("#CompanyName-Symbol");
         
