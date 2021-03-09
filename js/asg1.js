@@ -34,6 +34,7 @@ document.addEventListener("DOMContentLoaded", function() {
         companyDetails.style.display = "none";
         companyInfoHeader.style.display = "none";
         stockDiv.style.display = "none";
+        stockDivSecondary.style.display = "none";
         document.querySelector("#clearFilter").style.display = "none";
     }
 
@@ -315,6 +316,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         localStorage.setItem("stockdata", json);
                         stockData = JSON.parse(localStorage.getItem("stockdata"));
                         stockDiv.style.display = "block";
+                        stockDivSecondary.style.display = "block";
                         popStockData(stockData);
                         popStockSecondary(stockData);
                     } ).catch(error => console.error(error));

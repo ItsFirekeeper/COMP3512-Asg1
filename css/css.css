@@ -115,7 +115,7 @@ canvas{
 }
 
 #stockFormDiv {
-  display: inline-block;
+  display: block;
   list-style-type: none;
   overflow-y: scroll;
   background-color: white;
@@ -128,7 +128,7 @@ canvas{
 }
 
 #stockFormSecondary {
-  display: inline-block;
+  display: block;
   list-style-type: none;
   background-color: white;
   border: 1px solid black;
