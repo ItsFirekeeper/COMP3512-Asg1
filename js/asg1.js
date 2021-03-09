@@ -352,6 +352,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
+    //populates the primary stock information area
     function popStockData(sD) {
         stockDiv.innerHTML = "";
         const tbl = document.createElement("table");
@@ -382,6 +383,7 @@ document.addEventListener("DOMContentLoaded", function() {
         stockDiv.appendChild(tbl);
     }
 
+    //creates the stock information header
     function stockHeader() {
         const trHeader = document.createElement("tr");
         const dateHeader = document.createElement("th");
@@ -405,6 +407,7 @@ document.addEventListener("DOMContentLoaded", function() {
         return trHeader;
     }
 
+    //toggles the alternative chart view
     function toggleChartView(selectedCompany) {
         if (selectedCompany == null){
             alert("Please select a company before switching to chart view");
@@ -428,6 +431,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     // inspired by https://stackoverflow.com/questions/28180871/grouped-bar-charts-in-chart-js   
+    //creates bar chart
     function createBarChart(company){
 
         document.querySelector('#bar-div').innerHTML = "";
@@ -495,6 +499,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // inspired by https://code.tutsplus.com/tutorials/getting-started-with-chartjs-line-and-bar-charts--cms-28384 
     //used https://stackoverflow.com/questions/51196855/chart-js-moment-js-could-not-be-found-you-must-include-it-before-chart-js-to for script help
+    //creates line chart
     function createLineChart(stockData){
        document.querySelector('#line-div').innerHTML = "";
         
@@ -565,6 +570,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
     
+    //creates candle chart
     function createCandleChart(stockData){
         const candleGraphSection = document.querySelector('#candle-graph-img');
         let candlestickChart = echarts.init(candleGraphSection);
@@ -584,7 +590,7 @@ document.addEventListener("DOMContentLoaded", function() {
         candlestickChart.setOption(option);
     }        
         
-    
+    //general sorting function for each one of the header types of the stock table
     function sortStocks(sortType) {
         if (sortType == "Date") {
             const dateSort = stockData.sort( function(a,b) {
@@ -672,6 +678,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
+    //populates the secondary area of the stock table
     function popStockSecondary(sD) {
         stockDivSecondary.innerHTML = "";
         let secondaryArray = [
@@ -728,9 +735,17 @@ document.addEventListener("DOMContentLoaded", function() {
             rw.appendChild(vol);
             tbl.appendChild(rw);
         }
+        tbl.rows[0].insertCell(0);
+        let minRow = tbl.rows[1].insertCell(0);
+        minRow.innerHTML = "min";
+        let maxRow = tbl.rows[2].insertCell(0);
+        maxRow.innerHTML = "max";
+        let avgRow = tbl.rows[3].insertCell(0);
+        avgRow.innerHTML = "avg";
         stockDivSecondary.appendChild(tbl);
     }
 
+    //generates an array of the given property, for example the volume column for an array of stock data
     function generateValArray(array, prop) {
         let returnArray = [];
         for (ele of array) {
@@ -739,6 +754,7 @@ document.addEventListener("DOMContentLoaded", function() {
         return returnArray;
     }
 
+    //generates the minimum, maximum, and average values for an array of values
     function genMinMaxAvg(valArray) {
         let sum = 0;
         for (v of valArray) {
@@ -750,6 +766,7 @@ document.addEventListener("DOMContentLoaded", function() {
         return retArray;
     }
 
+    //performs a table transposition
     function tableFlip(array) {
         const rowCount = array.length;
         const colCount = array[0].length;
@@ -761,7 +778,8 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         return retArray;
     }
-   
+
+
     function changeCompanyAndSymbolHeader(selectedCompany){
         const headerCompanySymbol = document.querySelector("#CompanyName-Symbol");
         
