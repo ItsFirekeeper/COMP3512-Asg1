@@ -521,6 +521,13 @@ document.addEventListener("DOMContentLoaded", function() {
     function createLineChart(stockData){
        document.querySelector('#line-div').innerHTML = "";
         
+        if(stockData == null){
+           const h3 = document.createElement('h3');
+            h3.textContent = "No financial information to be displayed for line chart";
+            h3.setAttribute("id", "noFinancialMessageLine");
+            document.querySelector('#line-div').appendChild(h3); 
+        }
+        else{
         const bar = document.createElement('canvas');
         bar.setAttribute("id", "line-graph-img");
         
@@ -585,6 +592,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
                                   }
         });
+        }
     }
     
     //creates candle chart
