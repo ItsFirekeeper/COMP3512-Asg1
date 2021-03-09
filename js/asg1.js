@@ -203,6 +203,7 @@ document.addEventListener("DOMContentLoaded", function() {
             compList = JSON.parse(compJ);
             popCoList(compList);
         }
+
     }
 
     // Populates the company list given an array of companies
