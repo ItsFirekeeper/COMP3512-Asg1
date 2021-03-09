@@ -114,7 +114,23 @@ document.addEventListener("DOMContentLoaded", function() {
             sortStocks(e.target.innerHTML);
         }
     });
+    
+    document.querySelector('.speak-button').addEventListener('click', (e) => {
+        
+        if(selectedCompany != null){
+        speak(selectedCompany.description);
+        }
+        
+    });
+// used https://developer.mozilla.org/en-US/docs/Web/API/Window/speechSynthesis for refernce
+    function speak(text) {
 
+	let msg = new SpeechSynthesisUtterance();
+    let voices = speechSynthesis.getVoices();
+	msg.text = text;
+	window.speechSynthesis.speak(msg);
+}                                                        
+                                                             
     // Move the map marker to the specified company location
     function moveMapMarker(companyListEvent, currentMap){
     
