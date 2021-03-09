@@ -11,7 +11,9 @@ document.addEventListener("DOMContentLoaded", function() {
     const companyList = document.querySelector("#list-companies");
     const companyInfoHeader = document.querySelector("#company-info section h2");
     const stockDiv = document.querySelector("#stockFormDiv");
+    const stockDivHeader = document.querySelector("#stock-data h2");
     const stockDivSecondary = document.querySelector("#stockFormSecondary");
+    const stockDivSecondaryHeader = document.querySelector("#stock-data-secondary h2");
     
     
     let creditLoop = true;
@@ -34,7 +36,9 @@ document.addEventListener("DOMContentLoaded", function() {
         companyDetails.style.display = "none";
         companyInfoHeader.style.display = "none";
         stockDiv.style.display = "none";
+        stockDivHeader.style.display = "none";
         stockDivSecondary.style.display = "none";
+        stockDivSecondaryHeader.style.display = "none";
         document.querySelector("#clearFilter").style.display = "none";
     }
 
@@ -74,6 +78,9 @@ document.addEventListener("DOMContentLoaded", function() {
             popCompanyInfo(e);
             fetchStocks(e);
             companyDetails.style.display = "block";
+            stockDivSecondaryHeader.style.display = "block";
+            stockDivHeader.style.display = "block";
+            companyInfoHeader.style.display = "block";
             moveMapMarker(e, worldMap);
         }
     });
@@ -151,7 +158,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 filterCompanies.style.display = "block";
                 filterLabel.style.display = "block";
                 resultsList.style.display = "block";
-                companyInfoHeader.style.display = "block";
                 document.querySelector("#clearFilter").style.display = "block";
             } ).catch(error => console.error(error));
         }
@@ -162,7 +168,6 @@ document.addEventListener("DOMContentLoaded", function() {
             filterCompanies.style.display = "block";
             filterLabel.style.display = "block";
             resultsList.style.display = "block";
-            companyInfoHeader.style.display = "block";
             document.querySelector("#clearFilter").style.display = "block";
         }
     }
