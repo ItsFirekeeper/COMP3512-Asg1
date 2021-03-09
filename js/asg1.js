@@ -755,11 +755,11 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         tbl.rows[0].insertCell(0);
         let minRow = tbl.rows[1].insertCell(0);
-        minRow.innerHTML = "min";
+        minRow.innerHTML = "Minimum";
         let maxRow = tbl.rows[2].insertCell(0);
-        maxRow.innerHTML = "max";
+        maxRow.innerHTML = "Maximum";
         let avgRow = tbl.rows[3].insertCell(0);
-        avgRow.innerHTML = "avg";
+        avgRow.innerHTML = "Average";
         stockDivSecondary.appendChild(tbl);
     }
 
