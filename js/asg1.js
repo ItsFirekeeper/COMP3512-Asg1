@@ -446,7 +446,7 @@ document.addEventListener("DOMContentLoaded", function() {
          document.querySelector('#bar-div').innerHTML = "";
         if(company != null && company.financials == null){
             const h3 = document.createElement('h3');
-            h3.textContent = "No financial information to be displayed";
+            h3.textContent = "No financial information to be displayed for bar chart";
             h3.setAttribute("id", "noFinancialMessage");
             document.querySelector('#bar-div').appendChild(h3);
             
