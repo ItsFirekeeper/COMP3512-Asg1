@@ -98,8 +98,6 @@ document.addEventListener("DOMContentLoaded", function() {
             createCandleChart(stockData);
             createLineChart(stockData);
             }
-            changeCompanyAndSymbolHeader(selectedCompany);
-            companyDescription(selectedCompany);
         });
     });
     
@@ -237,6 +235,8 @@ document.addEventListener("DOMContentLoaded", function() {
                     companyDetails.appendChild(website);
                     companyDetails.appendChild(exchange);
                     companyDetails.appendChild(description);
+                    changeCompanyAndSymbolHeader(selectedCompany);
+                    companyDescription(selectedCompany);
                 }
                 else {
                     const notFound = document.createElement("p");
