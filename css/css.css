@@ -25,6 +25,11 @@ canvas{
     font-size: 30px
     
 }
+#noFinancialMessageLine{
+    padding: 100px;
+    font-size: 30px
+    
+}
 
 #noFinancialMessageTable{
     padding: 5px;
