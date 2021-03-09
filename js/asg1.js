@@ -271,6 +271,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function popFinancials(selectedCompany){
         const financialTable = document.querySelector('#financial-table-body');
+        financialTable.innerHTML = "";
+         if(selectedCompany != null && selectedCompany.financials == null){
+            const h3 = document.createElement('h3');
+            h3.textContent = "No financial information to be displayed";
+            h3.setAttribute("id", "noFinancialMessageTable");
+            financialTable.appendChild(h3);   
+        }
+        else{ 
         for( let i = 0; i < selectedCompany.financials.years.length; i++){
             const trFinancial = document.createElement("tr");
             const tdYear = document.createElement("td");
@@ -289,6 +297,7 @@ document.addEventListener("DOMContentLoaded", function() {
             trFinancial.appendChild(tdAssets);
             trFinancial.appendChild(tdLiabilities);
             financialTable.appendChild(trFinancial);
+        }
         }
     }
         
@@ -406,8 +415,15 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // inspired by https://stackoverflow.com/questions/28180871/grouped-bar-charts-in-chart-js   
     function createBarChart(company){
-
-        document.querySelector('#bar-div').innerHTML = "";
+         document.querySelector('#bar-div').innerHTML = "";
+        if(company != null && company.financials == null){
+            const h3 = document.createElement('h3');
+            h3.textContent = "No financial information to be displayed";
+            h3.setAttribute("id", "noFinancialMessage");
+            document.querySelector('#bar-div').appendChild(h3);
+            
+        }
+        else{
         
         const bar = document.createElement('canvas');
         bar.setAttribute("id", "bar-graph-img");
@@ -467,7 +483,8 @@ document.addEventListener("DOMContentLoaded", function() {
             type: "bar",
             data: barData,
             options: barChartOptions
-        });   
+        }); 
+        }
     }
 
     // inspired by https://code.tutsplus.com/tutorials/getting-started-with-chartjs-line-and-bar-charts--cms-28384 
