@@ -6,8 +6,18 @@ body {
     font-size: 0.8rem;
 }
 
+canvas{
+  background:#fff;
+  width: 1100px !important;
+  height: 400px !important;
+}
+
 #credits h3, #credits i {
     display: inline;
+}
+
+#charts{
+    height: 900px;
 }
 
 .container #mainView, .container #chartView {
@@ -29,6 +39,7 @@ body {
     padding: 180px;
     box-shadow: 8px 8px 20px #1a8fc5;
 }
+
 
 #header {
     grid-column: 1 / span 3;
@@ -256,6 +267,7 @@ credit to Epicmax and Vasili Savitski
     font-size: 15px;
     margin: 20px;
     background-color: white;
+    padding: 20px;
 }
   
 #stockFormDiv table th, #stockFormDiv table td, #stockFormSecondary table th, #stockFormSecondary table td {
