@@ -11,7 +11,9 @@ document.addEventListener("DOMContentLoaded", function() {
     const companyList = document.querySelector("#list-companies");
     const companyInfoHeader = document.querySelector("#company-info section h2");
     const stockDiv = document.querySelector("#stockFormDiv");
+    const stockDivHeader = document.querySelector("#stock-data h2");
     const stockDivSecondary = document.querySelector("#stockFormSecondary");
+    const stockDivSecondaryHeader = document.querySelector("#stock-data-secondary h2");
     
     
     let creditLoop = true;
@@ -34,6 +36,9 @@ document.addEventListener("DOMContentLoaded", function() {
         companyDetails.style.display = "none";
         companyInfoHeader.style.display = "none";
         stockDiv.style.display = "none";
+        stockDivHeader.style.display = "none";
+        stockDivSecondary.style.display = "none";
+        stockDivSecondaryHeader.style.display = "none";
         document.querySelector("#clearFilter").style.display = "none";
     }
 
@@ -73,6 +78,9 @@ document.addEventListener("DOMContentLoaded", function() {
             popCompanyInfo(e);
             fetchStocks(e);
             companyDetails.style.display = "block";
+            stockDivSecondaryHeader.style.display = "block";
+            stockDivHeader.style.display = "block";
+            companyInfoHeader.style.display = "block";
             moveMapMarker(e, worldMap);
         }
     });
@@ -106,7 +114,23 @@ document.addEventListener("DOMContentLoaded", function() {
             sortStocks(e.target.innerHTML);
         }
     });
+    
+    document.querySelector('.speak-button').addEventListener('click', (e) => {
+        
+        if(selectedCompany != null){
+        speak(selectedCompany.description);
+        }
+        
+    });
+// used https://developer.mozilla.org/en-US/docs/Web/API/Window/speechSynthesis for refernce
+    function speak(text) {
 
+	let msg = new SpeechSynthesisUtterance();
+    let voices = speechSynthesis.getVoices();
+	msg.text = text;
+	window.speechSynthesis.speak(msg);
+}                                                        
+                                                             
     // Move the map marker to the specified company location
     function moveMapMarker(companyListEvent, currentMap){
     
@@ -150,7 +174,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 filterCompanies.style.display = "block";
                 filterLabel.style.display = "block";
                 resultsList.style.display = "block";
-                companyInfoHeader.style.display = "block";
                 document.querySelector("#clearFilter").style.display = "block";
             } ).catch(error => console.error(error));
         }
@@ -161,7 +184,6 @@ document.addEventListener("DOMContentLoaded", function() {
             filterCompanies.style.display = "block";
             filterLabel.style.display = "block";
             resultsList.style.display = "block";
-            companyInfoHeader.style.display = "block";
             document.querySelector("#clearFilter").style.display = "block";
         }
     }
@@ -324,6 +346,7 @@ document.addEventListener("DOMContentLoaded", function() {
                         localStorage.setItem("stockdata", json);
                         stockData = JSON.parse(localStorage.getItem("stockdata"));
                         stockDiv.style.display = "block";
+                        stockDivSecondary.style.display = "block";
                         popStockData(stockData);
                         popStockSecondary(stockData);
                     } ).catch(error => console.error(error));
@@ -338,6 +361,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
+    //populates the primary stock information area
     function popStockData(sD) {
         stockDiv.innerHTML = "";
         const tbl = document.createElement("table");
@@ -368,6 +392,7 @@ document.addEventListener("DOMContentLoaded", function() {
         stockDiv.appendChild(tbl);
     }
 
+    //creates the stock information header
     function stockHeader() {
         const trHeader = document.createElement("tr");
         const dateHeader = document.createElement("th");
@@ -391,6 +416,7 @@ document.addEventListener("DOMContentLoaded", function() {
         return trHeader;
     }
 
+    //toggles the alternative chart view
     function toggleChartView(selectedCompany) {
         if (selectedCompany == null){
             alert("Please select a company before switching to chart view");
@@ -414,6 +440,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     // inspired by https://stackoverflow.com/questions/28180871/grouped-bar-charts-in-chart-js   
+    //creates bar chart
     function createBarChart(company){
          document.querySelector('#bar-div').innerHTML = "";
         if(company != null && company.financials == null){
@@ -489,6 +516,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // inspired by https://code.tutsplus.com/tutorials/getting-started-with-chartjs-line-and-bar-charts--cms-28384 
     //used https://stackoverflow.com/questions/51196855/chart-js-moment-js-could-not-be-found-you-must-include-it-before-chart-js-to for script help
+    //creates line chart
     function createLineChart(stockData){
        document.querySelector('#line-div').innerHTML = "";
         
@@ -559,6 +587,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
     
+    //creates candle chart
     function createCandleChart(stockData){
         const candleGraphSection = document.querySelector('#candle-graph-img');
         let candlestickChart = echarts.init(candleGraphSection);
@@ -578,7 +607,7 @@ document.addEventListener("DOMContentLoaded", function() {
         candlestickChart.setOption(option);
     }        
         
-    
+    //general sorting function for each one of the header types of the stock table
     function sortStocks(sortType) {
         if (sortType == "Date") {
             const dateSort = stockData.sort( function(a,b) {
@@ -666,6 +695,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     }
 
+    //populates the secondary area of the stock table
     function popStockSecondary(sD) {
         stockDivSecondary.innerHTML = "";
         let secondaryArray = [
@@ -722,9 +752,17 @@ document.addEventListener("DOMContentLoaded", function() {
             rw.appendChild(vol);
             tbl.appendChild(rw);
         }
+        tbl.rows[0].insertCell(0);
+        let minRow = tbl.rows[1].insertCell(0);
+        minRow.innerHTML = "min";
+        let maxRow = tbl.rows[2].insertCell(0);
+        maxRow.innerHTML = "max";
+        let avgRow = tbl.rows[3].insertCell(0);
+        avgRow.innerHTML = "avg";
         stockDivSecondary.appendChild(tbl);
     }
 
+    //generates an array of the given property, for example the volume column for an array of stock data
     function generateValArray(array, prop) {
         let returnArray = [];
         for (ele of array) {
@@ -733,6 +771,7 @@ document.addEventListener("DOMContentLoaded", function() {
         return returnArray;
     }
 
+    //generates the minimum, maximum, and average values for an array of values
     function genMinMaxAvg(valArray) {
         let sum = 0;
         for (v of valArray) {
@@ -744,6 +783,7 @@ document.addEventListener("DOMContentLoaded", function() {
         return retArray;
     }
 
+    //performs a table transposition
     function tableFlip(array) {
         const rowCount = array.length;
         const colCount = array[0].length;
@@ -755,7 +795,8 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         return retArray;
     }
-   
+
+
     function changeCompanyAndSymbolHeader(selectedCompany){
         const headerCompanySymbol = document.querySelector("#CompanyName-Symbol");
         
